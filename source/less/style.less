@@ -1,0 +1,61 @@
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/*----------------- Colors generation -----------------*/
+
+@score1: #a8ff0d;
+@score2: #fff710;
+@score3: #ff6410;
+@score4: #ff0800;
+
+@color_step: 1.5;
+
+.generate-score1(@n, @i: 0) when (@i =< @n) {
+  .score-1.group-@{i} {
+    @fill: darken( @score1, @i * 1);
+
+    fill: @fill;
+    stroke: darken( @fill, 10% );
+  }
+  .generate-score1(@n, (@i + 1));
+}
+
+.generate-score2(@n, @i: 0) when (@i =< @n) {
+  .score-2.group-@{i} {
+    @fill: darken( @score2, @i * @color_step);
+
+    fill: @fill;
+    stroke: darken( @fill, 10% );
+  }
+  .generate-score2(@n, (@i + 1));
+}
+
+.generate-score3(@n, @i: 0) when (@i =< @n) {
+  .score-3.group-@{i} {
+    @fill: darken( @score3, @i * @color_step);
+
+    fill: @fill;
+    stroke: darken( @fill, 10% );
+  }
+  .generate-score3(@n, (@i + 1));
+}
+
+.generate-score4(@n, @i: 0) when (@i =< @n) {
+  .score-4.group-@{i} {
+    @fill: darken( @score4, @i * @color_step);
+
+    fill: @fill;
+    stroke: darken( @fill, 10% );
+  }
+  .generate-score4(@n, (@i + 1));
+}
+
+.generate-score1(9);
+.generate-score2(9);
+.generate-score3(9);
+.generate-score4(9);
