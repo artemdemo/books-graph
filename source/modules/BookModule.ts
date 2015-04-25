@@ -135,11 +135,23 @@ module Book {
 
     /**
      * Determine density of the circle
-     * @param d
+     * @param book
      * @returns {number}
      */
-    export function getCharge(d) {
-        return d.voters * -0.9;
+    export function getCharge( book: bookData ) {
+        return book.voters * -0.9;
+    }
+
+    export function onMouseEnter( book:bookData ) {
+        var $circle = document.getElementById( book.id );
+        $circle.setAttribute('class', $circle.getAttribute('class') + ' active' );
+    }
+
+    export function onMouseLeave( book:bookData ) {
+        var $circle = document.getElementById( book.id );
+        var className = $circle.getAttribute('class');
+        className = className.replace(new RegExp('(^|\\b)' + 'active'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        $circle.setAttribute('class', className );
     }
 
     /**

@@ -40,7 +40,10 @@ promise.get('data/books_rnd.json')
             .enter().append("circle")
             .attr("class", function(d){ return Book.getCircleClass( <bookData>d ) })
             .attr("r", function(d){ return Book.getBookRadius( <bookData>d ) })
-            .call(force.drag);
+            .attr("id", function(d){ return <bookData>d.id })
+            .call(force.drag)
+            .on('mouseenter', Book.onMouseEnter )
+            .on('mouseleave', Book.onMouseLeave );
 
         node.append("title")
             .text(function(d) { return d.name; });

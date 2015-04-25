@@ -133,13 +133,25 @@ var Book;
     Book.moveTowardCenter = moveTowardCenter;
     /**
      * Determine density of the circle
-     * @param d
+     * @param book
      * @returns {number}
      */
-    function getCharge(d) {
-        return d.voters * -0.9;
+    function getCharge(book) {
+        return book.voters * -0.9;
     }
     Book.getCharge = getCharge;
+    function onMouseEnter(book) {
+        var $circle = document.getElementById(book.id);
+        $circle.setAttribute('class', $circle.getAttribute('class') + ' active');
+    }
+    Book.onMouseEnter = onMouseEnter;
+    function onMouseLeave(book) {
+        var $circle = document.getElementById(book.id);
+        var className = $circle.getAttribute('class');
+        className = className.replace(new RegExp('(^|\\b)' + 'active'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        $circle.setAttribute('class', className);
+    }
+    Book.onMouseLeave = onMouseLeave;
     /**
      * Calculate avg score of given book
      * @param book
@@ -281,7 +293,10 @@ promise.get('data/books_rnd.json')
         .enter().append("circle")
         .attr("class", function (d) { return Book.getCircleClass(d); })
         .attr("r", function (d) { return Book.getBookRadius(d); })
-        .call(force.drag);
+        .attr("id", function (d) { return d.id; })
+        .call(force.drag)
+        .on('mouseenter', Book.onMouseEnter)
+        .on('mouseleave', Book.onMouseLeave);
     node.append("title")
         .text(function (d) { return d.name; });
     force.on("tick", function (e) {

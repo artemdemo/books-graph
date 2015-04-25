@@ -2,6 +2,9 @@ body {
   margin: 0;
   padding: 0;
 }
+circle.active {
+  stroke-width: 3;
+}
 /*----------------- Colors generation -----------------*/
 .score-1.group-0 {
   fill: #a8ff0d;

@@ -4,7 +4,7 @@
   "Books": [
     {
       "id": "553aa4ec8b5ddb9f56fd77ae",
-      "name": "Zuvy",
+      "bookName": "Zuvy",
       "price": 12.12,
       "author": "Ingrid Miranda",
       "year": 2008,
@@ -18,7 +18,7 @@
     },
     {
       "id": "553aa4ec5a129473240fc156",
-      "name": "Shepard",
+      "bookName": "Shepard",
       "price": 10.47,
       "author": "Molly Torres",
       "year": 2012,
@@ -32,7 +32,7 @@
     },
     {
       "id": "553aa4ecb9cd56021c82294e",
-      "name": "Orbean",
+      "bookName": "Orbean",
       "price": 9.27,
       "author": "Brenda Romero",
       "year": 2015,
@@ -46,7 +46,7 @@
     },
     {
       "id": "553aa4ec63e9d938cd35bc2c",
-      "name": "Andershun",
+      "bookName": "Andershun",
       "price": 2.74,
       "author": "Fowler Hardin",
       "year": 2012,
@@ -60,7 +60,7 @@
     },
     {
       "id": "553aa4ec178da5e4a6c7f07c",
-      "name": "Idego",
+      "bookName": "Idego",
       "price": 7.45,
       "author": "Mccormick Savage",
       "year": 2010,
@@ -74,7 +74,7 @@
     },
     {
       "id": "553aa4ece1d359fd7081ba2f",
-      "name": "Zensor",
+      "bookName": "Zensor",
       "price": 9.44,
       "author": "Fulton Munoz",
       "year": 2014,
@@ -88,7 +88,7 @@
     },
     {
       "id": "553aa4ec2df9c60befda9938",
-      "name": "Obones",
+      "bookName": "Obones",
       "price": 6.15,
       "author": "Gena Rose",
       "year": 2013,
@@ -102,7 +102,7 @@
     },
     {
       "id": "553aa4ec970ccbeffa79a93b",
-      "name": "Gology",
+      "bookName": "Gology",
       "price": 2.72,
       "author": "Blake Abbott",
       "year": 2011,
@@ -116,7 +116,7 @@
     },
     {
       "id": "553aa4ec7d605e438aa96acd",
-      "name": "Medalert",
+      "bookName": "Medalert",
       "price": 8.41,
       "author": "Crane Beard",
       "year": 2012,
@@ -130,7 +130,7 @@
     },
     {
       "id": "553aa4ecc1e3e131346c77f1",
-      "name": "Miraclis",
+      "bookName": "Miraclis",
       "price": 4.84,
       "author": "Bird Winters",
       "year": 2015,
@@ -144,7 +144,7 @@
     },
     {
       "id": "553aa4eca394ee9355c23a5b",
-      "name": "Obliq",
+      "bookName": "Obliq",
       "price": 5.3,
       "author": "Velma Casey",
       "year": 2010,
@@ -158,7 +158,7 @@
     },
     {
       "id": "553aa4ecc5baca24bc5efbe8",
-      "name": "Junipoor",
+      "bookName": "Junipoor",
       "price": 10.8,
       "author": "Santos Slater",
       "year": 2011,
@@ -172,7 +172,7 @@
     },
     {
       "id": "553aa4ecfab734887918a693",
-      "name": "Roughies",
+      "bookName": "Roughies",
       "price": 12.52,
       "author": "Dean Cohen",
       "year": 2015,
@@ -186,7 +186,7 @@
     },
     {
       "id": "553aa4ec54a9432233274301",
-      "name": "Fortean",
+      "bookName": "Fortean",
       "price": 5.77,
       "author": "Calderon Delacruz",
       "year": 2008,
@@ -200,7 +200,7 @@
     },
     {
       "id": "553aa4ecdbf2ffa18f0dceda",
-      "name": "Qualitex",
+      "bookName": "Qualitex",
       "price": 9.34,
       "author": "Beatrice Cook",
       "year": 2012,
@@ -214,7 +214,7 @@
     },
     {
       "id": "553aa4ec0ec89c47e643e688",
-      "name": "Cablam",
+      "bookName": "Cablam",
       "price": 3.16,
       "author": "Galloway Moss",
       "year": 2014,
@@ -228,7 +228,7 @@
     },
     {
       "id": "553aa4ec19dd1599b5e0778e",
-      "name": "Teraprene",
+      "bookName": "Teraprene",
       "price": 13.87,
       "author": "Carney Farmer",
       "year": 2008,
@@ -242,7 +242,7 @@
     },
     {
       "id": "553aa4ecc3b71c385e5b924a",
-      "name": "Peticular",
+      "bookName": "Peticular",
       "price": 3.93,
       "author": "Diana Daugherty",
       "year": 2010,
@@ -256,7 +256,7 @@
     },
     {
       "id": "553aa4ec095fa473a80ee97a",
-      "name": "Cemention",
+      "bookName": "Cemention",
       "price": 5.88,
       "author": "Nolan Mccoy",
       "year": 2012,
@@ -270,7 +270,7 @@
     },
     {
       "id": "553aa4ecbcfd8641c79a059d",
-      "name": "Kiosk",
+      "bookName": "Kiosk",
       "price": 9.1,
       "author": "Cecilia Daniel",
       "year": 2010,
@@ -284,7 +284,7 @@
     },
     {
       "id": "553aa4ecf892933d40c80d7f",
-      "name": "Virxo",
+      "bookName": "Virxo",
       "price": 10.73,
       "author": "Odom Thornton",
       "year": 2014,
@@ -298,7 +298,7 @@
     },
     {
       "id": "553aa4ece29f059683257ab8",
-      "name": "Adornica",
+      "bookName": "Adornica",
       "price": 9.59,
       "author": "Bridges Goodwin",
       "year": 2010,
@@ -312,7 +312,7 @@
     },
     {
       "id": "553aa4ec04049c441f99316e",
-      "name": "Remotion",
+      "bookName": "Remotion",
       "price": 2.24,
       "author": "Hurley Cochran",
       "year": 2013,
@@ -326,7 +326,7 @@
     },
     {
       "id": "553aa4ec5fcc4c99034f3d8c",
-      "name": "Volax",
+      "bookName": "Volax",
       "price": 4.97,
       "author": "Foreman Lowery",
       "year": 2012,
@@ -340,7 +340,7 @@
     },
     {
       "id": "553aa4ec5ad07a6e46bb127c",
-      "name": "Nurplex",
+      "bookName": "Nurplex",
       "price": 10.34,
       "author": "Marquita Watkins",
       "year": 2009,
@@ -354,7 +354,7 @@
     },
     {
       "id": "553aa4ecc81da46f2829b731",
-      "name": "Slax",
+      "bookName": "Slax",
       "price": 11.99,
       "author": "Weaver Howell",
       "year": 2013,
@@ -368,7 +368,7 @@
     },
     {
       "id": "553aa4ec69eb79291895222e",
-      "name": "Zillanet",
+      "bookName": "Zillanet",
       "price": 13.66,
       "author": "Horton Obrien",
       "year": 2008,
@@ -382,7 +382,7 @@
     },
     {
       "id": "553aa4eced694674000e069b",
-      "name": "Irack",
+      "bookName": "Irack",
       "price": 6.16,
       "author": "Emerson Velazquez",
       "year": 2012,
@@ -396,7 +396,7 @@
     },
     {
       "id": "553aa4ec1322076bf8447ce4",
-      "name": "Zenthall",
+      "bookName": "Zenthall",
       "price": 5.62,
       "author": "Mccarty Rogers",
       "year": 2013,
@@ -410,7 +410,7 @@
     },
     {
       "id": "553aa4ecf9754ffb4f62a344",
-      "name": "Geostele",
+      "bookName": "Geostele",
       "price": 11.99,
       "author": "Dina Emerson",
       "year": 2014,
@@ -424,7 +424,7 @@
     },
     {
       "id": "553aa4ecd8783091e42152bc",
-      "name": "Webiotic",
+      "bookName": "Webiotic",
       "price": 5.31,
       "author": "Amelia Lewis",
       "year": 2013,
@@ -438,7 +438,7 @@
     },
     {
       "id": "553aa4ec241b133d52011314",
-      "name": "Dancerity",
+      "bookName": "Dancerity",
       "price": 3.94,
       "author": "Madeline Good",
       "year": 2012,
@@ -452,7 +452,7 @@
     },
     {
       "id": "553aa4ec8147d07b71eb5f2a",
-      "name": "Xeronk",
+      "bookName": "Xeronk",
       "price": 3.34,
       "author": "Brigitte Mclaughlin",
       "year": 2013,
@@ -466,7 +466,7 @@
     },
     {
       "id": "553aa4ec80b4d5bb06584b34",
-      "name": "Pivitol",
+      "bookName": "Pivitol",
       "price": 11.78,
       "author": "Whitley Garcia",
       "year": 2009,
@@ -480,7 +480,7 @@
     },
     {
       "id": "553aa4ec4ba9f772ff66fc43",
-      "name": "Oulu",
+      "bookName": "Oulu",
       "price": 6.42,
       "author": "Karla Sellers",
       "year": 2011,
@@ -494,7 +494,7 @@
     },
     {
       "id": "553aa4ec38e3d4cecbb278e6",
-      "name": "Fleetmix",
+      "bookName": "Fleetmix",
       "price": 8.54,
       "author": "Margo Juarez",
       "year": 2014,
@@ -508,7 +508,7 @@
     },
     {
       "id": "553aa4ec999d55aed4dac4eb",
-      "name": "Eventix",
+      "bookName": "Eventix",
       "price": 2.32,
       "author": "Marla Odom",
       "year": 2009,
@@ -522,7 +522,7 @@
     },
     {
       "id": "553aa4ecd8fb0b487efa7949",
-      "name": "Lyrichord",
+      "bookName": "Lyrichord",
       "price": 12.35,
       "author": "Clara Schwartz",
       "year": 2010,
@@ -536,7 +536,7 @@
     },
     {
       "id": "553aa4ecd05a5486a0dc30f1",
-      "name": "Aeora",
+      "bookName": "Aeora",
       "price": 9.37,
       "author": "Monroe Armstrong",
       "year": 2015,
@@ -550,7 +550,7 @@
     },
     {
       "id": "553aa4ec02a598e29e5f8354",
-      "name": "Singavera",
+      "bookName": "Singavera",
       "price": 7.22,
       "author": "Phyllis Powell",
       "year": 2013,
@@ -564,7 +564,7 @@
     },
     {
       "id": "553aa4ecf868012e3e421567",
-      "name": "Quantasis",
+      "bookName": "Quantasis",
       "price": 4.39,
       "author": "Aurelia Vinson",
       "year": 2011,
@@ -578,7 +578,7 @@
     },
     {
       "id": "553aa4ec41ad59340dbe9dae",
-      "name": "Stockpost",
+      "bookName": "Stockpost",
       "price": 12.72,
       "author": "Whitehead Gillespie",
       "year": 2008,
@@ -592,7 +592,7 @@
     },
     {
       "id": "553aa4ec37a93af26d38345e",
-      "name": "Handshake",
+      "bookName": "Handshake",
       "price": 7.56,
       "author": "Candace Morrison",
       "year": 2008,
@@ -606,7 +606,7 @@
     },
     {
       "id": "553aa4ec6c7ad0c5635fa303",
-      "name": "Empirica",
+      "bookName": "Empirica",
       "price": 2.17,
       "author": "Peck Gibbs",
       "year": 2014,
@@ -620,7 +620,7 @@
     },
     {
       "id": "553aa4ec180dcdf0ddc561e2",
-      "name": "Magneato",
+      "bookName": "Magneato",
       "price": 12.93,
       "author": "Johnson Glass",
       "year": 2011,
@@ -634,7 +634,7 @@
     },
     {
       "id": "553aa4ec860ba3ad683d4ee7",
-      "name": "Talkalot",
+      "bookName": "Talkalot",
       "price": 12,
       "author": "Carissa Barrett",
       "year": 2015,
@@ -648,7 +648,7 @@
     },
     {
       "id": "553aa4ecf43aa79fe6532b71",
-      "name": "Kneedles",
+      "bookName": "Kneedles",
       "price": 6.18,
       "author": "Deanne Mckenzie",
       "year": 2010,
@@ -662,7 +662,7 @@
     },
     {
       "id": "553aa4ec85577dfbd412de63",
-      "name": "Jasper",
+      "bookName": "Jasper",
       "price": 13.03,
       "author": "Aguirre Norton",
       "year": 2011,
@@ -676,7 +676,7 @@
     },
     {
       "id": "553aa4ec777e3dde880e93db",
-      "name": "Gaptec",
+      "bookName": "Gaptec",
       "price": 12.2,
       "author": "Robertson Kelley",
       "year": 2010,
@@ -690,7 +690,7 @@
     },
     {
       "id": "553aa4eca118777484babac3",
-      "name": "Soprano",
+      "bookName": "Soprano",
       "price": 11.26,
       "author": "Vickie Moon",
       "year": 2012,
@@ -704,7 +704,7 @@
     },
     {
       "id": "553aa4ec8ccbddeca4572edd",
-      "name": "Corpulse",
+      "bookName": "Corpulse",
       "price": 13.84,
       "author": "Sonya Fuentes",
       "year": 2008,
@@ -718,7 +718,7 @@
     },
     {
       "id": "553aa4ece3d4f723b51f3640",
-      "name": "Podunk",
+      "bookName": "Podunk",
       "price": 3.76,
       "author": "Diaz Lester",
       "year": 2013,
@@ -732,7 +732,7 @@
     },
     {
       "id": "553aa4ece8a1186eaa3d8fd4",
-      "name": "Rubadub",
+      "bookName": "Rubadub",
       "price": 10.77,
       "author": "Sawyer Hopkins",
       "year": 2010,
@@ -746,7 +746,7 @@
     },
     {
       "id": "553aa4ecb1bee4a968e9dfcc",
-      "name": "Imperium",
+      "bookName": "Imperium",
       "price": 8.17,
       "author": "Carey Molina",
       "year": 2009,
@@ -760,7 +760,7 @@
     },
     {
       "id": "553aa4ec9e8491102ae89c13",
-      "name": "Farmage",
+      "bookName": "Farmage",
       "price": 11.1,
       "author": "Prince Gates",
       "year": 2011,
@@ -774,7 +774,7 @@
     },
     {
       "id": "553aa4ec2f9061b7fbcce502",
-      "name": "Locazone",
+      "bookName": "Locazone",
       "price": 12.88,
       "author": "Jennie Chang",
       "year": 2014,
@@ -788,7 +788,7 @@
     },
     {
       "id": "553aa4ec3c9f5619bb2a3313",
-      "name": "Manglo",
+      "bookName": "Manglo",
       "price": 3.68,
       "author": "Agnes Norman",
       "year": 2015,
@@ -802,7 +802,7 @@
     },
     {
       "id": "553aa4ec776c107acba13c35",
-      "name": "Assistix",
+      "bookName": "Assistix",
       "price": 11.85,
       "author": "Maryellen Ramsey",
       "year": 2012,
@@ -816,7 +816,7 @@
     },
     {
       "id": "553aa4ecdd0174d81fc260f7",
-      "name": "Quailcom",
+      "bookName": "Quailcom",
       "price": 6.3,
       "author": "Kelley Mcclain",
       "year": 2013,
@@ -830,7 +830,7 @@
     },
     {
       "id": "553aa4ecef2592fd4dcffdd1",
-      "name": "Gleamink",
+      "bookName": "Gleamink",
       "price": 12.71,
       "author": "Patti Myers",
       "year": 2013,
@@ -844,7 +844,7 @@
     },
     {
       "id": "553aa4ecb600615a9d68c53b",
-      "name": "Opticon",
+      "bookName": "Opticon",
       "price": 6.39,
       "author": "Alisha Hammond",
       "year": 2015,
@@ -858,7 +858,7 @@
     },
     {
       "id": "553aa4ecb51e9c22160d35f7",
-      "name": "Datagene",
+      "bookName": "Datagene",
       "price": 2.3,
       "author": "Riggs Haynes",
       "year": 2012,
@@ -872,7 +872,7 @@
     },
     {
       "id": "553aa4ece95779e17a525217",
-      "name": "Comtour",
+      "bookName": "Comtour",
       "price": 2.96,
       "author": "Ursula Mcconnell",
       "year": 2015,
@@ -886,7 +886,7 @@
     },
     {
       "id": "553aa4eceb2ebdbc6517ec41",
-      "name": "Grupoli",
+      "bookName": "Grupoli",
       "price": 7.98,
       "author": "Janice Powers",
       "year": 2012,
@@ -900,7 +900,7 @@
     },
     {
       "id": "553aa4ec6a75aca8a031089e",
-      "name": "Orbiflex",
+      "bookName": "Orbiflex",
       "price": 4.11,
       "author": "Hooper Baxter",
       "year": 2010,
@@ -914,7 +914,7 @@
     },
     {
       "id": "553aa4ecea3c8d257aec5ac5",
-      "name": "Cytrek",
+      "bookName": "Cytrek",
       "price": 8.29,
       "author": "Vonda Berg",
       "year": 2012,
@@ -928,7 +928,7 @@
     },
     {
       "id": "553aa4ec2d17436003b76e2a",
-      "name": "Radiantix",
+      "bookName": "Radiantix",
       "price": 4.7,
       "author": "Melinda Dalton",
       "year": 2008,
@@ -942,7 +942,7 @@
     },
     {
       "id": "553aa4ec227916b43cd1f89b",
-      "name": "Freakin",
+      "bookName": "Freakin",
       "price": 11.87,
       "author": "Rhea Heath",
       "year": 2013,
@@ -956,7 +956,7 @@
     },
     {
       "id": "553aa4ec918b43026cdee9e0",
-      "name": "Uniworld",
+      "bookName": "Uniworld",
       "price": 3.75,
       "author": "Esther Montoya",
       "year": 2011,
@@ -970,7 +970,7 @@
     },
     {
       "id": "553aa4ecbbdb2846b0ad7e28",
-      "name": "Acumentor",
+      "bookName": "Acumentor",
       "price": 4.95,
       "author": "Bertie Lambert",
       "year": 2014,
@@ -984,7 +984,7 @@
     },
     {
       "id": "553aa4ec62ddae3655fda0d6",
-      "name": "Farmex",
+      "bookName": "Farmex",
       "price": 7.2,
       "author": "Diann Monroe",
       "year": 2013,
@@ -998,7 +998,7 @@
     },
     {
       "id": "553aa4ec91aa8cc4d4189e66",
-      "name": "Pharmacon",
+      "bookName": "Pharmacon",
       "price": 6.94,
       "author": "Sadie Johnston",
       "year": 2008,
@@ -1012,7 +1012,7 @@
     },
     {
       "id": "553aa4ec3cefd8af391feed7",
-      "name": "Ginkogene",
+      "bookName": "Ginkogene",
       "price": 9.57,
       "author": "Noreen Garner",
       "year": 2012,
@@ -1026,7 +1026,7 @@
     },
     {
       "id": "553aa4ec089d4994f6d846fb",
-      "name": "Slofast",
+      "bookName": "Slofast",
       "price": 7.31,
       "author": "Mcneil Downs",
       "year": 2010,
@@ -1040,7 +1040,7 @@
     },
     {
       "id": "553aa4ecb696535d288047c4",
-      "name": "Barkarama",
+      "bookName": "Barkarama",
       "price": 11.06,
       "author": "Deana Raymond",
       "year": 2014,
@@ -1054,7 +1054,7 @@
     },
     {
       "id": "553aa4ecf609455f97d23f3e",
-      "name": "Equicom",
+      "bookName": "Equicom",
       "price": 12.85,
       "author": "Hogan Sheppard",
       "year": 2012,
@@ -1068,7 +1068,7 @@
     },
     {
       "id": "553aa4ecdcb66e8969203ade",
-      "name": "Mazuda",
+      "bookName": "Mazuda",
       "price": 5.33,
       "author": "Hart Merritt",
       "year": 2013,
@@ -1082,7 +1082,7 @@
     },
     {
       "id": "553aa4ec9065392fab0038cf",
-      "name": "Toyletry",
+      "bookName": "Toyletry",
       "price": 12.66,
       "author": "Wyatt Mays",
       "year": 2015,
@@ -1096,7 +1096,7 @@
     },
     {
       "id": "553aa4ecbf8384ac1a0e4c44",
-      "name": "Xixan",
+      "bookName": "Xixan",
       "price": 4.23,
       "author": "Bentley Calhoun",
       "year": 2009,
@@ -1110,7 +1110,7 @@
     },
     {
       "id": "553aa4ec25dfe5fcde5588ee",
-      "name": "Supremia",
+      "bookName": "Supremia",
       "price": 8.5,
       "author": "York Gutierrez",
       "year": 2011,
@@ -1124,7 +1124,7 @@
     },
     {
       "id": "553aa4ec21d294cf8c197450",
-      "name": "Intergeek",
+      "bookName": "Intergeek",
       "price": 5.24,
       "author": "Vinson Maddox",
       "year": 2009,
@@ -1138,7 +1138,7 @@
     },
     {
       "id": "553aa4ec9cf3c10c5de6667e",
-      "name": "Viasia",
+      "bookName": "Viasia",
       "price": 10.43,
       "author": "Cathryn Justice",
       "year": 2015,
@@ -1152,7 +1152,7 @@
     },
     {
       "id": "553aa4ecc4bdfc50714005ce",
-      "name": "Ontagene",
+      "bookName": "Ontagene",
       "price": 7.07,
       "author": "Rae Campos",
       "year": 2013,
@@ -1166,7 +1166,7 @@
     },
     {
       "id": "553aa4ec5b36235bfb4b4ed0",
-      "name": "Artworlds",
+      "bookName": "Artworlds",
       "price": 10.33,
       "author": "Alyson Reed",
       "year": 2013,
@@ -1180,7 +1180,7 @@
     },
     {
       "id": "553aa4ecbabd42df54e0e89c",
-      "name": "Omatom",
+      "bookName": "Omatom",
       "price": 13.29,
       "author": "Hall Mcfadden",
       "year": 2009,
@@ -1194,7 +1194,7 @@
     },
     {
       "id": "553aa4ec5f6167dcff72e575",
-      "name": "Plasto",
+      "bookName": "Plasto",
       "price": 5.64,
       "author": "Sherri Merrill",
       "year": 2013,
@@ -1208,7 +1208,7 @@
     },
     {
       "id": "553aa4ec6cfa5eecbe9409f9",
-      "name": "Filodyne",
+      "bookName": "Filodyne",
       "price": 4.17,
       "author": "Love Montgomery",
       "year": 2011,
@@ -1222,7 +1222,7 @@
     },
     {
       "id": "553aa4ecc3fd7cdcabd09514",
-      "name": "Ecosys",
+      "bookName": "Ecosys",
       "price": 11.21,
       "author": "Weeks Lane",
       "year": 2012,
@@ -1236,7 +1236,7 @@
     },
     {
       "id": "553aa4ec09d7f10bb35c5352",
-      "name": "Zosis",
+      "bookName": "Zosis",
       "price": 11.64,
       "author": "Head Mcbride",
       "year": 2009,
@@ -1250,7 +1250,7 @@
     },
     {
       "id": "553aa4ecee9429459b12f24f",
-      "name": "Equitax",
+      "bookName": "Equitax",
       "price": 8.83,
       "author": "Calhoun Cunningham",
       "year": 2015,
@@ -1264,7 +1264,7 @@
     },
     {
       "id": "553aa4ece8d562408e246cfa",
-      "name": "Viocular",
+      "bookName": "Viocular",
       "price": 3.71,
       "author": "Carmella Holman",
       "year": 2015,
@@ -1278,7 +1278,7 @@
     },
     {
       "id": "553aa4eca0f024a2b243a8a3",
-      "name": "Dancity",
+      "bookName": "Dancity",
       "price": 13.53,
       "author": "Newton Cabrera",
       "year": 2012,
@@ -1292,7 +1292,7 @@
     },
     {
       "id": "553aa4ecf5db4f752a93935b",
-      "name": "Macronaut",
+      "bookName": "Macronaut",
       "price": 7.43,
       "author": "Yvette Nguyen",
       "year": 2008,
@@ -1306,7 +1306,7 @@
     },
     {
       "id": "553aa4ecfb0144fac8bfc438",
-      "name": "Colaire",
+      "bookName": "Colaire",
       "price": 6.92,
       "author": "Mullen Perry",
       "year": 2014,
@@ -1320,7 +1320,7 @@
     },
     {
       "id": "553aa4ec1dca7b7d9d1d0060",
-      "name": "Everest",
+      "bookName": "Everest",
       "price": 7.18,
       "author": "Harriett Leon",
       "year": 2008,
@@ -1334,7 +1334,7 @@
     },
     {
       "id": "553aa4ec53b7dde0f8fbdbc1",
-      "name": "Comtrail",
+      "bookName": "Comtrail",
       "price": 3.46,
       "author": "Hutchinson Witt",
       "year": 2009,
@@ -1348,7 +1348,7 @@
     },
     {
       "id": "553aa4ec65e8d1a8db398bfb",
-      "name": "Qimonk",
+      "bookName": "Qimonk",
       "price": 6.62,
       "author": "Hester Salas",
       "year": 2014,
@@ -1362,7 +1362,7 @@
     },
     {
       "id": "553aa4ec93d2e90a0266a6a5",
-      "name": "Metroz",
+      "bookName": "Metroz",
       "price": 13.32,
       "author": "Guthrie Wise",
       "year": 2010,
@@ -1376,7 +1376,7 @@
     },
     {
       "id": "553aa4ecb9222b4bb64bb117",
-      "name": "Zenco",
+      "bookName": "Zenco",
       "price": 10.32,
       "author": "Deirdre Randall",
       "year": 2009,
@@ -1390,7 +1390,7 @@
     },
     {
       "id": "553aa4ecf589236e2f1aec23",
-      "name": "Isoternia",
+      "bookName": "Isoternia",
       "price": 3.49,
       "author": "Cunningham Bolton",
       "year": 2008,
@@ -1404,7 +1404,7 @@
     },
     {
       "id": "553aa4ec087de7a98f9d77e8",
-      "name": "Ovium",
+      "bookName": "Ovium",
       "price": 10.23,
       "author": "Cantrell Whitney",
       "year": 2014,
@@ -1418,7 +1418,7 @@
     },
     {
       "id": "553aa4ec5347a6a7fbd0d031",
-      "name": "Ebidco",
+      "bookName": "Ebidco",
       "price": 5.92,
       "author": "Reba Byers",
       "year": 2015,
@@ -1432,7 +1432,7 @@
     },
     {
       "id": "553aa4ecfc20f371b23a184b",
-      "name": "Fossiel",
+      "bookName": "Fossiel",
       "price": 10.12,
       "author": "Lynn Mckee",
       "year": 2010,
@@ -1446,7 +1446,7 @@
     },
     {
       "id": "553aa4ec21b7157956f3a4af",
-      "name": "Callflex",
+      "bookName": "Callflex",
       "price": 13.68,
       "author": "Mercado Hebert",
       "year": 2013,
@@ -1460,7 +1460,7 @@
     },
     {
       "id": "553aa4ec32314b5f4d790573",
-      "name": "Eschoir",
+      "bookName": "Eschoir",
       "price": 3.5,
       "author": "Dodson Cameron",
       "year": 2014,
@@ -1474,7 +1474,7 @@
     },
     {
       "id": "553aa4ec4650e3b544e20f7e",
-      "name": "Zilidium",
+      "bookName": "Zilidium",
       "price": 11.19,
       "author": "Leola Brennan",
       "year": 2015,
@@ -1488,7 +1488,7 @@
     },
     {
       "id": "553aa4ec017a9186ee63f48e",
-      "name": "Opticom",
+      "bookName": "Opticom",
       "price": 8.85,
       "author": "Allison Bell",
       "year": 2011,
@@ -1502,7 +1502,7 @@
     },
     {
       "id": "553aa4ec5773d75b76814f67",
-      "name": "Orbixtar",
+      "bookName": "Orbixtar",
       "price": 11.75,
       "author": "Wise Huffman",
       "year": 2009,
@@ -1516,7 +1516,7 @@
     },
     {
       "id": "553aa4ecbc9d99d55f11434c",
-      "name": "Vinch",
+      "bookName": "Vinch",
       "price": 12.98,
       "author": "Barnett Hester",
       "year": 2009,
@@ -1530,7 +1530,7 @@
     },
     {
       "id": "553aa4ec56af914850a25759",
-      "name": "Imkan",
+      "bookName": "Imkan",
       "price": 5.64,
       "author": "Sweeney Valdez",
       "year": 2011,
@@ -1544,7 +1544,7 @@
     },
     {
       "id": "553aa4ec8b9c5b3fdf10783f",
-      "name": "Synkgen",
+      "bookName": "Synkgen",
       "price": 12.64,
       "author": "Gracie Ellis",
       "year": 2010,
@@ -1558,7 +1558,7 @@
     },
     {
       "id": "553aa4ecf3e68674c58b2795",
-      "name": "Retrotex",
+      "bookName": "Retrotex",
       "price": 7.73,
       "author": "Jenkins Brown",
       "year": 2010,
@@ -1572,7 +1572,7 @@
     },
     {
       "id": "553aa4ec295064d8d80f9f82",
-      "name": "Extremo",
+      "bookName": "Extremo",
       "price": 3.2,
       "author": "Marisol Vance",
       "year": 2015,
@@ -1586,7 +1586,7 @@
     },
     {
       "id": "553aa4ec647db0f44c3c740c",
-      "name": "Songbird",
+      "bookName": "Songbird",
       "price": 6.11,
       "author": "Margarita Morse",
       "year": 2009,
@@ -1600,7 +1600,7 @@
     },
     {
       "id": "553aa4ec55cc9f17553248d4",
-      "name": "Squish",
+      "bookName": "Squish",
       "price": 13.06,
       "author": "Wheeler Lang",
       "year": 2013,
@@ -1614,7 +1614,7 @@
     },
     {
       "id": "553aa4ec34566259887a6880",
-      "name": "Ronbert",
+      "bookName": "Ronbert",
       "price": 6.41,
       "author": "Kathie Lott",
       "year": 2011,
@@ -1628,7 +1628,7 @@
     },
     {
       "id": "553aa4ec12c123e112d92f63",
-      "name": "Netility",
+      "bookName": "Netility",
       "price": 13.78,
       "author": "Crawford Castillo",
       "year": 2014,
@@ -1642,7 +1642,7 @@
     },
     {
       "id": "553aa4ec9213ba9d5945508f",
-      "name": "Daisu",
+      "bookName": "Daisu",
       "price": 12.55,
       "author": "Holly Matthews",
       "year": 2013,
@@ -1656,7 +1656,7 @@
     },
     {
       "id": "553aa4ecd2e82656843e15c1",
-      "name": "Aquasseur",
+      "bookName": "Aquasseur",
       "price": 8.86,
       "author": "Josefa Duncan",
       "year": 2013,
@@ -1670,7 +1670,7 @@
     },
     {
       "id": "553aa4ec322dd64108759021",
-      "name": "Caxt",
+      "bookName": "Caxt",
       "price": 3.63,
       "author": "Selma Gonzalez",
       "year": 2013,
@@ -1684,7 +1684,7 @@
     },
     {
       "id": "553aa4ec7ed01f41ae98b327",
-      "name": "Katakana",
+      "bookName": "Katakana",
       "price": 7.59,
       "author": "Jillian Joseph",
       "year": 2011,
@@ -1698,7 +1698,7 @@
     },
     {
       "id": "553aa4ec4d4d6f012cd956bc",
-      "name": "Duoflex",
+      "bookName": "Duoflex",
       "price": 4.82,
       "author": "Garcia Shelton",
       "year": 2015,
@@ -1712,7 +1712,7 @@
     },
     {
       "id": "553aa4ecf9f388fcaa1e7c6c",
-      "name": "Kengen",
+      "bookName": "Kengen",
       "price": 4.04,
       "author": "Joyner Stafford",
       "year": 2012,
@@ -1726,7 +1726,7 @@
     },
     {
       "id": "553aa4ec8c23c5e9da6413b3",
-      "name": "Proxsoft",
+      "bookName": "Proxsoft",
       "price": 10.33,
       "author": "Webster Reilly",
       "year": 2009,
@@ -1740,7 +1740,7 @@
     },
     {
       "id": "553aa4eca597c64423bba583",
-      "name": "Hinway",
+      "bookName": "Hinway",
       "price": 8.38,
       "author": "Dorothea Doyle",
       "year": 2012,
@@ -1754,7 +1754,7 @@
     },
     {
       "id": "553aa4ec2948cf7208e9577c",
-      "name": "Inear",
+      "bookName": "Inear",
       "price": 2.91,
       "author": "Ginger Hines",
       "year": 2008,
@@ -1768,7 +1768,7 @@
     },
     {
       "id": "553aa4ec729c3a4fef71118c",
-      "name": "Urbanshee",
+      "bookName": "Urbanshee",
       "price": 4.62,
       "author": "Kathrine Leonard",
       "year": 2015,
@@ -1782,7 +1782,7 @@
     },
     {
       "id": "553aa4ece4d550ec7c384a65",
-      "name": "Autograte",
+      "bookName": "Autograte",
       "price": 13.78,
       "author": "Jacklyn Nichols",
       "year": 2008,
@@ -1796,7 +1796,7 @@
     },
     {
       "id": "553aa4ececfa28d462f45165",
-      "name": "Eternis",
+      "bookName": "Eternis",
       "price": 7.44,
       "author": "Lilia Swanson",
       "year": 2010,
@@ -1810,7 +1810,7 @@
     },
     {
       "id": "553aa4ece42cd11b98a7ae0f",
-      "name": "Portico",
+      "bookName": "Portico",
       "price": 6.21,
       "author": "Rhodes Fisher",
       "year": 2011,
@@ -1824,7 +1824,7 @@
     },
     {
       "id": "553aa4ecfbbb8f6d3ddc695a",
-      "name": "Koffee",
+      "bookName": "Koffee",
       "price": 9.53,
       "author": "Bauer Booker",
       "year": 2008,
@@ -1838,7 +1838,7 @@
     },
     {
       "id": "553aa4ec34c2d721d2895850",
-      "name": "Aquoavo",
+      "bookName": "Aquoavo",
       "price": 8.73,
       "author": "Kate Parks",
       "year": 2015,
@@ -1852,7 +1852,7 @@
     },
     {
       "id": "553aa4ececc35359bb3f4424",
-      "name": "Zilla",
+      "bookName": "Zilla",
       "price": 8.86,
       "author": "Cervantes Dale",
       "year": 2012,
@@ -1866,7 +1866,7 @@
     },
     {
       "id": "553aa4ec0128f91f8e0e299f",
-      "name": "Vertide",
+      "bookName": "Vertide",
       "price": 9.48,
       "author": "Lola Wilkerson",
       "year": 2010,
@@ -1880,7 +1880,7 @@
     },
     {
       "id": "553aa4ecf376330520c587a7",
-      "name": "Virva",
+      "bookName": "Virva",
       "price": 9.1,
       "author": "Etta Green",
       "year": 2010,
@@ -1894,7 +1894,7 @@
     },
     {
       "id": "553aa4ec4ddc3dc5dd3027f6",
-      "name": "Zilencio",
+      "bookName": "Zilencio",
       "price": 5.8,
       "author": "Gutierrez Marsh",
       "year": 2009,
@@ -1908,7 +1908,7 @@
     },
     {
       "id": "553aa4ec6469509bf357160a",
-      "name": "Ginkle",
+      "bookName": "Ginkle",
       "price": 2.5,
       "author": "Aurora Fowler",
       "year": 2014,
@@ -1922,7 +1922,7 @@
     },
     {
       "id": "553aa4eca2b6ac97e76bf21a",
-      "name": "Medmex",
+      "bookName": "Medmex",
       "price": 6.24,
       "author": "Tina Melton",
       "year": 2008,
@@ -1936,7 +1936,7 @@
     },
     {
       "id": "553aa4ece0ae59d347583987",
-      "name": "Vurbo",
+      "bookName": "Vurbo",
       "price": 13.59,
       "author": "Blevins Cotton",
       "year": 2012,
@@ -1950,7 +1950,7 @@
     },
     {
       "id": "553aa4ecb86409e5b153a886",
-      "name": "Comcubine",
+      "bookName": "Comcubine",
       "price": 4.83,
       "author": "Hull Ruiz",
       "year": 2011,
@@ -1964,7 +1964,7 @@
     },
     {
       "id": "553aa4ec5f78cb821d9058bf",
-      "name": "Endipin",
+      "bookName": "Endipin",
       "price": 5.07,
       "author": "Mejia Spencer",
       "year": 2011,
@@ -1978,7 +1978,7 @@
     },
     {
       "id": "553aa4ecc0dc09b8d495e9b6",
-      "name": "Anarco",
+      "bookName": "Anarco",
       "price": 8.61,
       "author": "Thornton Alvarado",
       "year": 2014,
@@ -1992,7 +1992,7 @@
     },
     {
       "id": "553aa4ec50c91c786e7a677e",
-      "name": "Zerbina",
+      "bookName": "Zerbina",
       "price": 3.51,
       "author": "Sykes Mcdaniel",
       "year": 2014,
@@ -2006,7 +2006,7 @@
     },
     {
       "id": "553aa4ecd3c9e209a9e4d427",
-      "name": "Playce",
+      "bookName": "Playce",
       "price": 12.25,
       "author": "Wade Marks",
       "year": 2013,
@@ -2020,7 +2020,7 @@
     },
     {
       "id": "553aa4ec0df8fae1e25115e9",
-      "name": "Voipa",
+      "bookName": "Voipa",
       "price": 8.67,
       "author": "Roman Carson",
       "year": 2009,
