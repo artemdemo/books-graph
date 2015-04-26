@@ -23,8 +23,16 @@ module Controllers {
             }, false);
     }
 
+    /**
+     * Return controller value
+     * @returns {contValues}
+     */
     export function getCurrentContValue(): contValues { return currentContValue; }
 
+    /**
+     * Set controller value
+     * @param value
+     */
     export function setCurrentContValue( value:string ) { currentContValue = contValues[ value ]; }
 
     /**

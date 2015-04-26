@@ -2,10 +2,47 @@ body {
   margin: 0;
   padding: 0;
 }
-circle.active {
+#controllers .btn {
+  outline: none;
+}
+/*--------------- Axes ---------------------*/
+.axis-group {
+  position: absolute;
+  color: gray;
+}
+#yAxis-group {
+  top: 20%;
+  left: 3%;
+  bottom: 10%;
+  padding-right: 13px;
+  border-right: 1px solid #ababab;
+}
+#yAxis-group .score {
+  margin: 20px 0;
+}
+#yAxis-group .score:first-child {
+  margin-top: 0;
+}
+#yAxis-group .score:last-child {
+  margin-bottom: 0;
+}
+#xAxis-group {
+  bottom: 44px;
+  left: 8%;
+  right: 8%;
+  text-align: center;
+  border-top: 1px solid #ababab;
+  padding-top: 5px;
+  color: gray;
+}
+#xAxis-group .year {
+  padding: 0 4.6%;
+}
+/*--------------- Circles ---------------------*/
+circle.book-node:hover {
   stroke-width: 3;
 }
-/*----------------- Colors generation -----------------*/
+/*---------- Colors generation ---------------*/
 .score-1.group-0 {
   fill: #a8ff0d;
   stroke: #8bd900;

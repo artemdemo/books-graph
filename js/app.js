@@ -104,7 +104,7 @@ var Book;
         var avgScore_floor = Math.floor(avgScore);
         var avgScore_group = Math.floor((avgScore - avgScore_floor) * 10);
         var className;
-        className = 'score-' + String(avgScore_floor);
+        className = 'book-node score-' + String(avgScore_floor);
         className += ' group-' + String(avgScore_group);
         return className;
     }
@@ -142,16 +142,22 @@ var Book;
     Book.getCharge = getCharge;
     function onMouseEnter(book) {
         var $circle = document.getElementById(book.id);
-        $circle.setAttribute('class', $circle.getAttribute('class') + ' active');
+        //$circle.setAttribute('class', $circle.getAttribute('class') + ' active' );
     }
     Book.onMouseEnter = onMouseEnter;
     function onMouseLeave(book) {
         var $circle = document.getElementById(book.id);
         var className = $circle.getAttribute('class');
         className = className.replace(new RegExp('(^|\\b)' + 'active'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-        $circle.setAttribute('class', className);
+        //$circle.setAttribute('class', className );
     }
     Book.onMouseLeave = onMouseLeave;
+    /**
+     * Return years object
+     * @returns {any}
+     */
+    function getYearsObject() { return years; }
+    Book.getYearsObject = getYearsObject;
     /**
      * Calculate avg score of given book
      * @param book
@@ -242,8 +248,16 @@ var Controllers;
         }, false);
     }
     Controllers.bindEvents = bindEvents;
+    /**
+     * Return controller value
+     * @returns {contValues}
+     */
     function getCurrentContValue() { return currentContValue; }
     Controllers.getCurrentContValue = getCurrentContValue;
+    /**
+     * Set controller value
+     * @param value
+     */
     function setCurrentContValue(value) { currentContValue = contValues[value]; }
     Controllers.setCurrentContValue = setCurrentContValue;
     /**
@@ -262,11 +276,61 @@ var Controllers;
         }
     }
 })(Controllers || (Controllers = {}));
+var Axes;
+(function (Axes) {
+    var xAxis;
+    var yAxis;
+    /**
+     * Adding axis to the graph
+     */
+    function addAxes() {
+        createXaxis();
+        createYaxis();
+    }
+    Axes.addAxes = addAxes;
+    /**
+     * Creating Y axis
+     */
+    function createYaxis() {
+        yAxis = document.createElement('div');
+        yAxis.setAttribute('id', 'yAxis-group');
+        yAxis.setAttribute('class', 'axis-group');
+        yAxis.style.top = (Paper.getPaperSize().height / 10) * 2 + 'px';
+        document.body.appendChild(yAxis);
+        for (var i = 4; i > 0; i--) {
+            var $text = document.createElement('div');
+            $text.setAttribute('class', 'score');
+            $text.appendChild(document.createTextNode(String(i)));
+            if (i != 4)
+                $text.style.marginTop = (Paper.getPaperSize().height / 10) * 2.2 + 'px';
+            yAxis.appendChild($text);
+        }
+    }
+    /**
+     * Creating X axis
+     */
+    function createXaxis() {
+        var years = Book.getYearsObject();
+        xAxis = document.createElement('div');
+        xAxis.setAttribute('id', 'xAxis-group');
+        xAxis.setAttribute('class', 'axis-group');
+        document.body.appendChild(xAxis);
+        for (var key in years) {
+            if (years.hasOwnProperty(key) && parseInt(key) == parseInt(key)) {
+                var $text = document.createElement('span');
+                $text.setAttribute('class', 'year');
+                $text.appendChild(document.createTextNode(key));
+                xAxis.appendChild($text);
+            }
+        }
+    }
+})(Axes || (Axes = {}));
 /// <reference path="d.ts/d3.d.ts" />
 /// <reference path="../vendor/promise.d.ts" />
 /// <reference path="modules/PaperModule.ts" />
 /// <reference path="modules/BookModule.ts" />
 /// <reference path="modules/ControllersModule.ts" />
+/// <reference path="modules/AxesModule.ts" />
 promise.get('data/books_rnd.json')
     .then(function (error, data) {
     var graph = JSON.parse(data);
@@ -297,16 +361,18 @@ promise.get('data/books_rnd.json')
         .call(force.drag)
         .on('mouseenter', Book.onMouseEnter)
         .on('mouseleave', Book.onMouseLeave);
+    /*
+    // Add <title></title> to circle node
     node.append("title")
-        .text(function (d) { return d.name; });
+        .text(function(d) { return d.name; });*/
     force.on("tick", function (e) {
         node.each(Book.moveTowardCenter(e.alpha));
         node.attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; });
     });
-    /*
-     * Bind events to the buttons
-     */
+    // Binding events to controll buttons
     Controllers.bindEvents(force);
+    // Adding axes
+    Axes.addAxes();
 });
 //# sourceMappingURL=app.js.map

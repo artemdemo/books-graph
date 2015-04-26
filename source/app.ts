@@ -3,6 +3,7 @@
 /// <reference path="modules/PaperModule.ts" />
 /// <reference path="modules/BookModule.ts" />
 /// <reference path="modules/ControllersModule.ts" />
+/// <reference path="modules/AxesModule.ts" />
 
 
 promise.get('data/books_rnd.json')
@@ -45,8 +46,10 @@ promise.get('data/books_rnd.json')
             .on('mouseenter', Book.onMouseEnter )
             .on('mouseleave', Book.onMouseLeave );
 
+        /*
+        // Add <title></title> to circle node
         node.append("title")
-            .text(function(d) { return d.name; });
+            .text(function(d) { return d.name; });*/
 
         force.on("tick", function(e) {
             node.each( Book.moveTowardCenter(e.alpha) );
@@ -54,9 +57,10 @@ promise.get('data/books_rnd.json')
                 .attr("cy", function(d) { return d.y; });
         });
 
-        /*
-         * Bind events to the buttons
-         */
+        // Binding events to controll buttons
         Controllers.bindEvents( force );
+
+        // Adding axes
+        Axes.addAxes();
 
     });

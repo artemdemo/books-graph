@@ -104,7 +104,7 @@ module Book {
         var avgScore_group = Math.floor( (avgScore - avgScore_floor) * 10 );
         var className:string;
 
-        className = 'score-' + String( avgScore_floor );
+        className = 'book-node score-' + String( avgScore_floor );
         className += ' group-' + String( avgScore_group );
 
         return className
@@ -144,15 +144,21 @@ module Book {
 
     export function onMouseEnter( book:bookData ) {
         var $circle = document.getElementById( book.id );
-        $circle.setAttribute('class', $circle.getAttribute('class') + ' active' );
+        //$circle.setAttribute('class', $circle.getAttribute('class') + ' active' );
     }
 
     export function onMouseLeave( book:bookData ) {
         var $circle = document.getElementById( book.id );
         var className = $circle.getAttribute('class');
         className = className.replace(new RegExp('(^|\\b)' + 'active'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-        $circle.setAttribute('class', className );
+        //$circle.setAttribute('class', className );
     }
+
+    /**
+     * Return years object
+     * @returns {any}
+     */
+    export function getYearsObject() { return years; }
 
     /**
      * Calculate avg score of given book
