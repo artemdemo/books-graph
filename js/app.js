@@ -243,6 +243,19 @@ var Controllers;
                 removeActiveClass(this);
                 e.srcElement.className += ' active';
                 setCurrentContValue(e.srcElement.attributes['data-show'].nodeValue);
+                switch (true) {
+                    case currentContValue == contValues.score:
+                        Axes.showAxis(Axes.Axis.y);
+                        Axes.hideAxis(Axes.Axis.x);
+                        break;
+                    case currentContValue == contValues.year:
+                        Axes.showAxis(Axes.Axis.y);
+                        Axes.showAxis(Axes.Axis.x);
+                        break;
+                    default:
+                        Axes.hideAxis(Axes.Axis.y);
+                        Axes.hideAxis(Axes.Axis.x);
+                }
             }
             force.start();
         }, false);
@@ -278,8 +291,13 @@ var Controllers;
 })(Controllers || (Controllers = {}));
 var Axes;
 (function (Axes) {
-    var xAxis;
-    var yAxis;
+    var $xAxis;
+    var $yAxis;
+    (function (Axis) {
+        Axis[Axis["x"] = 0] = "x";
+        Axis[Axis["y"] = 1] = "y";
+    })(Axes.Axis || (Axes.Axis = {}));
+    var Axis = Axes.Axis;
     /**
      * Adding axis to the graph
      */
@@ -289,21 +307,81 @@ var Axes;
     }
     Axes.addAxes = addAxes;
     /**
+     * Show axis - will choose axis by given parameter
+     * @param axis
+     */
+    function showAxis(axis) {
+        var $axis;
+        var className = 'show';
+        switch (true) {
+            case axis == Axis.x:
+                $axis = $xAxis;
+                break;
+            default:
+                $axis = $yAxis;
+        }
+        if (!new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className)) {
+            $axis.className += ' ' + className;
+        }
+    }
+    Axes.showAxis = showAxis;
+    /**
+     * Hide axis - will choose axis by given parameter
+     * @param axis
+     */
+    function hideAxis(axis) {
+        var $axis;
+        var className = 'show';
+        switch (true) {
+            case axis == Axis.x:
+                $axis = $xAxis;
+                break;
+            default:
+                $axis = $yAxis;
+        }
+        if (new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className)) {
+            $axis.className = $axis.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        }
+    }
+    Axes.hideAxis = hideAxis;
+    /**
+     * Toggle axis - will choose axis by given parameter
+     * @param axis
+     */
+    function toggleAxis(axis) {
+        var $axis;
+        var className = 'show';
+        switch (true) {
+            case axis == Axis.x:
+                $axis = $xAxis;
+                break;
+            default:
+                $axis = $yAxis;
+        }
+        if (new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className)) {
+            $axis.className = $axis.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        }
+        else {
+            $axis.className += ' ' + className;
+        }
+    }
+    Axes.toggleAxis = toggleAxis;
+    /**
      * Creating Y axis
      */
     function createYaxis() {
-        yAxis = document.createElement('div');
-        yAxis.setAttribute('id', 'yAxis-group');
-        yAxis.setAttribute('class', 'axis-group');
-        yAxis.style.top = (Paper.getPaperSize().height / 10) * 2 + 'px';
-        document.body.appendChild(yAxis);
+        $yAxis = document.createElement('div');
+        $yAxis.setAttribute('id', 'yAxis-group');
+        $yAxis.setAttribute('class', 'axis-group');
+        $yAxis.style.top = (Paper.getPaperSize().height / 10) * 2 + 'px';
+        document.body.appendChild($yAxis);
         for (var i = 4; i > 0; i--) {
             var $text = document.createElement('div');
             $text.setAttribute('class', 'score');
             $text.appendChild(document.createTextNode(String(i)));
             if (i != 4)
                 $text.style.marginTop = (Paper.getPaperSize().height / 10) * 2.2 + 'px';
-            yAxis.appendChild($text);
+            $yAxis.appendChild($text);
         }
     }
     /**
@@ -311,16 +389,16 @@ var Axes;
      */
     function createXaxis() {
         var years = Book.getYearsObject();
-        xAxis = document.createElement('div');
-        xAxis.setAttribute('id', 'xAxis-group');
-        xAxis.setAttribute('class', 'axis-group');
-        document.body.appendChild(xAxis);
+        $xAxis = document.createElement('div');
+        $xAxis.setAttribute('id', 'xAxis-group');
+        $xAxis.setAttribute('class', 'axis-group');
+        document.body.appendChild($xAxis);
         for (var key in years) {
             if (years.hasOwnProperty(key) && parseInt(key) == parseInt(key)) {
                 var $text = document.createElement('span');
                 $text.setAttribute('class', 'year');
                 $text.appendChild(document.createTextNode(key));
-                xAxis.appendChild($text);
+                $xAxis.appendChild($text);
             }
         }
     }

@@ -16,6 +16,13 @@ body {
 .axis-group {
   position: absolute;
   color: gray;
+  opacity: 0;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.axis-group.show {
+  opacity: 1;
 }
 
 #yAxis-group {
@@ -25,11 +32,7 @@ body {
   padding-right: 13px;
   border-right: 1px solid @borderColor;
 
-  .score {
-    margin: 20px 0;
-  }
-  .score:first-child { margin-top: 0; }
-  .score:last-child { margin-bottom: 0; }
+  .score {}
 }
 
 #xAxis-group {

@@ -18,6 +18,19 @@ module Controllers {
                     removeActiveClass( this );
                     ( <HTMLBaseElement> e.srcElement ).className += ' active';
                     setCurrentContValue( e.srcElement.attributes['data-show'].nodeValue );
+                    switch( true ) {
+                        case currentContValue == contValues.score:
+                            Axes.showAxis( Axes.Axis.y );
+                            Axes.hideAxis( Axes.Axis.x );
+                            break;
+                        case currentContValue == contValues.year:
+                            Axes.showAxis( Axes.Axis.y );
+                            Axes.showAxis( Axes.Axis.x );
+                            break;
+                        default:
+                            Axes.hideAxis( Axes.Axis.y );
+                            Axes.hideAxis( Axes.Axis.x );
+                    }
                 }
                 force.start();
             }, false);
