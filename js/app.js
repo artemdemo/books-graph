@@ -28,7 +28,8 @@ var Book;
             var book = books[i];
             var radius = 0;
             for (var key in book.score) {
-                radius += book.score[key];
+                if (book.score.hasOwnProperty(key))
+                    radius += book.score[key];
             }
             if (radius > relativeMaxRadius)
                 relativeMaxRadius = radius;
@@ -46,7 +47,8 @@ var Book;
             radius = book.voters;
         else
             for (var key in book.score) {
-                radius += book.score[key];
+                if (book.score.hasOwnProperty(key))
+                    radius += book.score[key];
             }
         return radius / relativeMaxRadius * maxRadius;
     }
@@ -67,7 +69,8 @@ var Book;
             var voters = 0;
             books[i].avgScore = getAvgScore(books[i]);
             for (var key in books[i].score) {
-                voters += books[i].score[key];
+                if (books[i].score.hasOwnProperty(key))
+                    voters += books[i].score[key];
             }
             books[i].voters = voters;
             if (years.hasOwnProperty(String(books[i].year))) {
@@ -86,9 +89,11 @@ var Book;
         // Index I need to determine position of each year
         var yearsIndex = 0;
         for (var key in years) {
-            if (years[key].hasOwnProperty('index')) {
-                years[key].index = yearsIndex;
-                yearsIndex++;
+            if (years.hasOwnProperty(key)) {
+                if (years[key].hasOwnProperty('index')) {
+                    years[key].index = yearsIndex;
+                    yearsIndex++;
+                }
             }
         }
         return books;
@@ -117,15 +122,9 @@ var Book;
     function moveTowardCenter(alpha) {
         return function (d) {
             var center = {
-                x: Paper.getPaperSize().width / 2,
-                y: Paper.getPaperSize().height / 2
+                x: getXcenter(d),
+                y: getYcenter(d)
             };
-            if (Controllers.getCurrentContValue() == Controllers.contValues.score) {
-                center = getScoreCenter(d);
-            }
-            else if (Controllers.getCurrentContValue() == Controllers.contValues.year) {
-                center = getYearCenter(d);
-            }
             d.x += (center.x - d.x) * 0.1 * alpha;
             d.y += (center.y - d.y) * 0.1 * alpha;
         };
@@ -154,7 +153,7 @@ var Book;
     Book.onMouseLeave = onMouseLeave;
     /**
      * Return years object
-     * @returns {any}
+     * @returns {*}
      */
     function getYearsObject() { return years; }
     Book.getYearsObject = getYearsObject;
@@ -167,57 +166,50 @@ var Book;
         var score = 0;
         var voters = 0;
         for (var key in book.score) {
-            score += parseInt(key) * book.score[key];
-            voters += book.score[key];
+            if (book.score.hasOwnProperty(key)) {
+                score += parseInt(key) * book.score[key];
+                voters += book.score[key];
+            }
         }
         if (voters > 0)
             score = score / voters;
         return score;
     }
     /**
-     * Calculate center position if filtered by score
+     * Calculate Y of the center
      * @param book
-     * @returns {{x: number, y: number}}
+     * @returns {number}
      */
-    function getScoreCenter(book) {
-        var center = {
-            x: Paper.getPaperSize().width / 2,
-            y: Paper.getPaperSize().height / 2
-        };
-        if (Math.floor(book.avgScore) == 1) {
-            center.y = (Paper.getPaperSize().height / 10) * 9;
+    function getYcenter(book) {
+        var y = Paper.getPaperSize().height / 2;
+        if (Controllers.getCurrentContValue().y == Controllers.contValues.score) {
+            if (Math.floor(book.avgScore) == 1) {
+                y = (Paper.getPaperSize().height / 10) * 9;
+            }
+            else {
+                var id = 5 - Math.floor(book.avgScore);
+                y = (Paper.getPaperSize().height / 10) * (2 * id + 1);
+            }
         }
-        else {
-            var id = 5 - Math.floor(book.avgScore);
-            center.y = (Paper.getPaperSize().height / 10) * (2 * id + 1);
-        }
-        return center;
+        return y;
     }
     /**
-     * Calculate center position if filtered by score and year
+     * Calculate X of the center
      * @param book
-     * @returns {{x: number, y: number}}
+     * @returns {number}
      */
-    function getYearCenter(book) {
-        var yearData = years[book.year];
-        var center = {
-            x: Paper.getPaperSize().width / 2,
-            y: Paper.getPaperSize().height / 2
-        };
-        if (Math.floor(book.avgScore) == 1) {
-            center.y = (Paper.getPaperSize().height / 10) * 9;
+    function getXcenter(book) {
+        var x = Paper.getPaperSize().width / 2;
+        if (Controllers.getCurrentContValue().x == Controllers.contValues.year) {
+            var yearData = years[book.year];
+            if (yearData.index == 0) {
+                x = Paper.getPaperSize().width / (years.length * 2);
+            }
+            else {
+                x = (Paper.getPaperSize().width / (years.length * 2)) * (2 * yearData.index + 1);
+            }
         }
-        else {
-            var id = 5 - Math.floor(book.avgScore);
-            center.y = (Paper.getPaperSize().height / 10) * (2 * id + 1);
-        }
-        if (yearData.index == 0) {
-            center.x = Paper.getPaperSize().width / (years.length * 2);
-        }
-        else {
-            center.x = (Paper.getPaperSize().width / (years.length * 2)) * (2 * yearData.index + 1);
-        }
-        return center;
+        return x;
     }
 })(Book || (Book = {}));
 var Controllers;
@@ -229,9 +221,12 @@ var Controllers;
         contValues[contValues["all"] = 0] = "all";
         contValues[contValues["score"] = 1] = "score";
         contValues[contValues["year"] = 2] = "year";
+        contValues[contValues["price"] = 3] = "price";
     })(Controllers.contValues || (Controllers.contValues = {}));
     var contValues = Controllers.contValues;
-    var currentContValue = contValues.all;
+    var currentContValueX = contValues.all;
+    var currentContValueY = contValues.all;
+    var activeClass = 'active';
     /**
      * Bond click events to the button controllers
      * @param force
@@ -240,62 +235,81 @@ var Controllers;
         document.getElementById('controllers')
             .addEventListener('click', function (e) {
             if (e.srcElement.attributes.hasOwnProperty('data-show')) {
-                removeActiveClass(this);
-                e.srcElement.className += ' active';
-                setCurrentContValue(e.srcElement.attributes['data-show'].nodeValue);
+                var $btn = e.srcElement;
+                // Check that source element has no active class and if no add one
+                if (!new RegExp('(^| )' + activeClass + '( |$)', 'gi').test($btn.className))
+                    $btn.className += ' ' + activeClass;
+                else
+                    // else remove active class from the element
+                    $btn.className = $btn.className.replace(new RegExp('(^|\\b) ' + activeClass + '(\\b|$)', 'gi'), '');
+                // Setting current controller value
+                toggleCurrentContValue($btn.parentNode.attributes['data-axis'].nodeValue, e.srcElement.attributes['data-show'].nodeValue // data - all, score, year
+                );
+                // Switching Y axes
                 switch (true) {
-                    case currentContValue == contValues.score:
-                        Axes.showAxis(Axes.Axis.y);
-                        Axes.hideAxis(Axes.Axis.x);
-                        break;
-                    case currentContValue == contValues.year:
-                        Axes.showAxis(Axes.Axis.y);
-                        Axes.showAxis(Axes.Axis.x);
+                    case currentContValueY == contValues.score:
+                        Axes.showAxis(Axes.Axis.score);
                         break;
                     default:
-                        Axes.hideAxis(Axes.Axis.y);
-                        Axes.hideAxis(Axes.Axis.x);
+                        Axes.hideAxis(Axes.Axis.score);
                 }
+                // Switching X axes
+                switch (true) {
+                    case currentContValueX == contValues.year:
+                        Axes.showAxis(Axes.Axis.year);
+                        break;
+                    case currentContValueX == contValues.price:
+                        break;
+                    default:
+                        Axes.hideAxis(Axes.Axis.year);
+                }
+                force.start();
             }
-            force.start();
         }, false);
     }
     Controllers.bindEvents = bindEvents;
     /**
      * Return controller value
-     * @returns {contValues}
+     * @returns {*}
      */
-    function getCurrentContValue() { return currentContValue; }
+    function getCurrentContValue() {
+        return {
+            x: currentContValueX,
+            y: currentContValueY
+        };
+    }
     Controllers.getCurrentContValue = getCurrentContValue;
     /**
      * Set controller value
+     * @param valueType {string} - X or Y
      * @param value
      */
-    function setCurrentContValue(value) { currentContValue = contValues[value]; }
-    Controllers.setCurrentContValue = setCurrentContValue;
-    /**
-     * Remove class 'active' from all buttons
-     * @param $controllers
-     */
-    function removeActiveClass($controllers) {
-        var buttons = $controllers.children;
-        var className = 'active';
-        for (var i = 0, len = buttons.length; i < len; i++) {
-            var el = buttons[i];
-            if (el.classList)
-                el.classList.remove(className);
-            else
-                el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    function toggleCurrentContValue(valueType, value) {
+        switch (true) {
+            case valueType == 'x':
+                if (currentContValueX != contValues[value])
+                    currentContValueX = contValues[value];
+                else
+                    currentContValueX = contValues.all;
+                break;
+            case valueType == 'y':
+                if (currentContValueY != contValues[value])
+                    currentContValueY = contValues[value];
+                else
+                    currentContValueY = contValues.all;
+                break;
         }
     }
+    Controllers.toggleCurrentContValue = toggleCurrentContValue;
 })(Controllers || (Controllers = {}));
 var Axes;
 (function (Axes) {
-    var $xAxis;
-    var $yAxis;
+    var $yearAxis;
+    var $scoreAxis;
+    var showAxisClass = 'show';
     (function (Axis) {
-        Axis[Axis["x"] = 0] = "x";
-        Axis[Axis["y"] = 1] = "y";
+        Axis[Axis["year"] = 0] = "year";
+        Axis[Axis["score"] = 1] = "score";
     })(Axes.Axis || (Axes.Axis = {}));
     var Axis = Axes.Axis;
     /**
@@ -303,7 +317,7 @@ var Axes;
      */
     function addAxes() {
         createXaxis();
-        createYaxis();
+        createScoreAxis();
     }
     Axes.addAxes = addAxes;
     /**
@@ -312,16 +326,16 @@ var Axes;
      */
     function showAxis(axis) {
         var $axis;
-        var className = 'show';
         switch (true) {
-            case axis == Axis.x:
-                $axis = $xAxis;
+            case axis == Axis.year:
+                $axis = $yearAxis;
                 break;
-            default:
-                $axis = $yAxis;
+            case axis == Axis.score:
+                $axis = $scoreAxis;
+                break;
         }
-        if (!new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className)) {
-            $axis.className += ' ' + className;
+        if (!new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className)) {
+            $axis.className += ' ' + showAxisClass;
         }
     }
     Axes.showAxis = showAxis;
@@ -333,14 +347,14 @@ var Axes;
         var $axis;
         var className = 'show';
         switch (true) {
-            case axis == Axis.x:
-                $axis = $xAxis;
+            case axis == Axis.year:
+                $axis = $yearAxis;
                 break;
-            default:
-                $axis = $yAxis;
+            case axis == Axis.score:
+                $axis = $scoreAxis;
         }
         if (new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className)) {
-            $axis.className = $axis.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+            $axis.className = $axis.className.replace(new RegExp('(^|\\b) ' + className + '(\\b|$)', 'gi'), '');
         }
     }
     Axes.hideAxis = hideAxis;
@@ -350,38 +364,37 @@ var Axes;
      */
     function toggleAxis(axis) {
         var $axis;
-        var className = 'show';
         switch (true) {
-            case axis == Axis.x:
-                $axis = $xAxis;
+            case axis == Axis.year:
+                $axis = $yearAxis;
                 break;
-            default:
-                $axis = $yAxis;
+            case axis == Axis.score:
+                $axis = $scoreAxis;
         }
-        if (new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className)) {
-            $axis.className = $axis.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        if (new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className)) {
+            $axis.className = $axis.className.replace(new RegExp('(^|\\b) ' + showAxisClass + '(\\b|$)', 'gi'), '');
         }
         else {
-            $axis.className += ' ' + className;
+            $axis.className += ' ' + showAxisClass;
         }
     }
     Axes.toggleAxis = toggleAxis;
     /**
      * Creating Y axis
      */
-    function createYaxis() {
-        $yAxis = document.createElement('div');
-        $yAxis.setAttribute('id', 'yAxis-group');
-        $yAxis.setAttribute('class', 'axis-group');
-        $yAxis.style.top = (Paper.getPaperSize().height / 10) * 2 + 'px';
-        document.body.appendChild($yAxis);
+    function createScoreAxis() {
+        $scoreAxis = document.createElement('div');
+        $scoreAxis.setAttribute('id', 'scoreAxis-group');
+        $scoreAxis.setAttribute('class', 'axis-group y-axis');
+        $scoreAxis.style.top = (Paper.getPaperSize().height / 10) * 2 + 'px';
+        document.body.appendChild($scoreAxis);
         for (var i = 4; i > 0; i--) {
             var $text = document.createElement('div');
             $text.setAttribute('class', 'score');
             $text.appendChild(document.createTextNode(String(i)));
             if (i != 4)
                 $text.style.marginTop = (Paper.getPaperSize().height / 10) * 2.2 + 'px';
-            $yAxis.appendChild($text);
+            $scoreAxis.appendChild($text);
         }
     }
     /**
@@ -389,16 +402,16 @@ var Axes;
      */
     function createXaxis() {
         var years = Book.getYearsObject();
-        $xAxis = document.createElement('div');
-        $xAxis.setAttribute('id', 'xAxis-group');
-        $xAxis.setAttribute('class', 'axis-group');
-        document.body.appendChild($xAxis);
+        $yearAxis = document.createElement('div');
+        $yearAxis.setAttribute('id', 'yearAxis-group');
+        $yearAxis.setAttribute('class', 'axis-group x-axis');
+        document.body.appendChild($yearAxis);
         for (var key in years) {
             if (years.hasOwnProperty(key) && parseInt(key) == parseInt(key)) {
                 var $text = document.createElement('span');
                 $text.setAttribute('class', 'year');
                 $text.appendChild(document.createTextNode(key));
-                $xAxis.appendChild($text);
+                $yearAxis.appendChild($text);
             }
         }
     }

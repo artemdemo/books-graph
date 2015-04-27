@@ -1,16 +1,18 @@
 module Axes {
 
-    var $xAxis: HTMLDivElement;
-    var $yAxis: HTMLDivElement;
+    var $yearAxis: HTMLDivElement;
+    var $scoreAxis: HTMLDivElement;
 
-    export enum Axis { x, y }
+    var showAxisClass = 'show';
+
+    export enum Axis { year, score }
 
     /**
      * Adding axis to the graph
      */
     export function addAxes() {
         createXaxis();
-        createYaxis();
+        createScoreAxis();
     }
 
     /**
@@ -19,18 +21,18 @@ module Axes {
      */
     export function showAxis ( axis: Axis ) {
         var $axis: HTMLDivElement;
-        var className = 'show';
 
         switch( true ) {
-            case axis == Axis.x:
-                $axis = $xAxis;
+            case axis == Axis.year:
+                $axis = $yearAxis;
                 break;
-            default:
-                $axis = $yAxis;
+            case axis == Axis.score:
+                $axis = $scoreAxis;
+                break;
         }
 
-        if ( ! new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className) ) {
-            $axis.className += ' ' + className;
+        if ( ! new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className) ) {
+            $axis.className += ' ' + showAxisClass;
         }
     }
 
@@ -43,15 +45,15 @@ module Axes {
         var className = 'show';
 
         switch( true ) {
-            case axis == Axis.x:
-                $axis = $xAxis;
+            case axis == Axis.year:
+                $axis = $yearAxis;
                 break;
-            default:
-                $axis = $yAxis;
+            case axis == Axis.score:
+                $axis = $scoreAxis;
         }
 
         if ( new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className) ) {
-            $axis.className = $axis.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+            $axis.className = $axis.className.replace(new RegExp('(^|\\b) ' + className + '(\\b|$)', 'gi'), '');
         }
     }
 
@@ -61,33 +63,32 @@ module Axes {
      */
     export function toggleAxis ( axis: Axis ) {
         var $axis: HTMLDivElement;
-        var className = 'show';
 
         switch( true ) {
-            case axis == Axis.x:
-                $axis = $xAxis;
+            case axis == Axis.year:
+                $axis = $yearAxis;
                 break;
-            default:
-                $axis = $yAxis;
+            case axis == Axis.score:
+                $axis = $scoreAxis;
         }
 
-        if ( new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className) ) {
-            $axis.className = $axis.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        if ( new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className) ) {
+            $axis.className = $axis.className.replace(new RegExp('(^|\\b) ' + showAxisClass + '(\\b|$)', 'gi'), '');
         } else {
-            $axis.className += ' ' + className;
+            $axis.className += ' ' + showAxisClass;
         }
     }
 
     /**
      * Creating Y axis
      */
-    function createYaxis() {
-        $yAxis = document.createElement('div');
-        $yAxis.setAttribute('id', 'yAxis-group');
-        $yAxis.setAttribute('class', 'axis-group');
-        $yAxis.style.top = ( Paper.getPaperSize().height / 10 ) * 2 + 'px';
+    function createScoreAxis() {
+        $scoreAxis = document.createElement('div');
+        $scoreAxis.setAttribute('id', 'scoreAxis-group');
+        $scoreAxis.setAttribute('class', 'axis-group y-axis');
+        $scoreAxis.style.top = ( Paper.getPaperSize().height / 10 ) * 2 + 'px';
 
-        document.body.appendChild( $yAxis );
+        document.body.appendChild( $scoreAxis );
 
         for ( var i=4; i>0; i-- ) {
             var $text: HTMLDivElement = document.createElement('div');
@@ -96,7 +97,7 @@ module Axes {
             $text.appendChild( document.createTextNode( String(i) ) );
             if ( i != 4 ) $text.style.marginTop = ( Paper.getPaperSize().height / 10 ) * 2.2 + 'px';
 
-            $yAxis.appendChild( $text );
+            $scoreAxis.appendChild( $text );
         }
     }
 
@@ -106,11 +107,11 @@ module Axes {
     function createXaxis() {
         var years = Book.getYearsObject();
 
-        $xAxis = document.createElement('div');
-        $xAxis.setAttribute('id', 'xAxis-group');
-        $xAxis.setAttribute('class', 'axis-group');
+        $yearAxis = document.createElement('div');
+        $yearAxis.setAttribute('id', 'yearAxis-group');
+        $yearAxis.setAttribute('class', 'axis-group x-axis');
 
-        document.body.appendChild( $xAxis );
+        document.body.appendChild( $yearAxis );
 
         for ( var key in years ) {
             if ( years.hasOwnProperty(key) && parseInt(key) == parseInt(key) ) {
@@ -119,7 +120,7 @@ module Axes {
                 $text.setAttribute('class', 'year');
                 $text.appendChild( document.createTextNode( key ) );
 
-                $xAxis.appendChild( $text );
+                $yearAxis.appendChild( $text );
             }
         }
     }

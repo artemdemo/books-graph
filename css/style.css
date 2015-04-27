@@ -16,14 +16,14 @@ body {
 .axis-group.show {
   opacity: 1;
 }
-#yAxis-group {
+.y-axis {
   top: 20%;
   left: 3%;
   bottom: 10%;
   padding-right: 13px;
   border-right: 1px solid #ababab;
 }
-#xAxis-group {
+.x-axis {
   bottom: 44px;
   left: 8%;
   right: 8%;
@@ -32,7 +32,7 @@ body {
   padding-top: 5px;
   color: gray;
 }
-#xAxis-group .year {
+.x-axis .year {
   padding: 0 4.6%;
 }
 /*--------------- Circles ---------------------*/

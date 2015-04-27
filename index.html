@@ -24,11 +24,19 @@
         ga('send', 'pageview');
     </script>
 
-    <div id="controllers" class="btn-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default active" data-show="all">All together</button>
-        <button type="button" class="btn btn-default" data-show="score">Separate by score</button>
-        <button type="button" class="btn btn-default" data-show="year">Separate by score and year</button>
+    <div id="controllers">
+        <label>y:</label>
+        <div class="btn-group" role="group" data-axis="y" aria-label="...">
+            <button type="button" class="btn btn-default" data-show="score">Separate by score</button>
+        </div>
+
+        <label>x:</label>
+        <div class="btn-group" role="group" data-axis="x" aria-label="...">
+            <button type="button" class="btn btn-default" data-show="year">Separate by year</button>
+            <button type="button" class="btn btn-default" data-show="price">Separate by price</button>
+        </div>
     </div>
+
 
     <script type="application/javascript" src="js/app.js"></script>
 

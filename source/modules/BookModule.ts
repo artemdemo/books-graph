@@ -30,7 +30,7 @@ module Book {
             var book = books[i];
             var radius = 0;
             for ( var key in book.score ) {
-                radius += book.score[key]
+                if (book.score.hasOwnProperty(key)) radius += book.score[key]
             }
             if ( radius > relativeMaxRadius ) relativeMaxRadius = radius;
         }
@@ -46,7 +46,7 @@ module Book {
         if ( book.hasOwnProperty('voters') ) radius = book.voters;
             else
                 for ( var key in book.score ) {
-                    radius += book.score[key]
+                    if (book.score.hasOwnProperty(key)) radius += book.score[key]
                 }
         return radius / relativeMaxRadius * maxRadius;
     }
@@ -67,7 +67,7 @@ module Book {
             var voters = 0;
             books[i].avgScore = getAvgScore( books[i] );
             for ( var key in books[i].score ) {
-                voters += books[i].score[key]
+                if ( books[i].score.hasOwnProperty(key) ) voters += books[i].score[key]
             }
             books[i].voters = voters;
             if ( years.hasOwnProperty( String(books[i].year) ) ) {
@@ -85,9 +85,11 @@ module Book {
         // Index I need to determine position of each year
         var yearsIndex = 0;
         for ( var key in years ) {
-            if ( years[key].hasOwnProperty('index') ) {
-                years[key].index = yearsIndex;
-                yearsIndex++;
+            if (years.hasOwnProperty(key)) {
+                if ( years[key].hasOwnProperty('index') ) {
+                    years[key].index = yearsIndex;
+                    yearsIndex++;
+                }
             }
         }
         return books;
@@ -118,15 +120,9 @@ module Book {
     export function moveTowardCenter( alpha ) {
         return function(d) {
             var center = {
-                x: Paper.getPaperSize().width / 2,
-                y: Paper.getPaperSize().height / 2
+                x: getXcenter( d ),
+                y: getYcenter( d )
             };
-
-            if ( Controllers.getCurrentContValue() == Controllers.contValues.score ) {
-                center = getScoreCenter( d );
-            } else if ( Controllers.getCurrentContValue() == Controllers.contValues.year ) {
-                center = getYearCenter( d )
-            }
 
             d.x += ( center.x - d.x ) * 0.1 * alpha;
             d.y += ( center.y - d.y ) * 0.1 * alpha;
@@ -156,7 +152,7 @@ module Book {
 
     /**
      * Return years object
-     * @returns {any}
+     * @returns {*}
      */
     export function getYearsObject() { return years; }
 
@@ -170,8 +166,10 @@ module Book {
         var voters:number = 0;
 
         for ( var key in book.score ) {
-            score += parseInt(key) * book.score[key];
-            voters += book.score[key];
+            if ( book.score.hasOwnProperty( key ) ) {
+                score += parseInt(key) * book.score[key];
+                voters += book.score[key];
+            }
         }
 
         if ( voters > 0 ) score = score / voters;
@@ -179,50 +177,42 @@ module Book {
     }
 
     /**
-     * Calculate center position if filtered by score
+     * Calculate Y of the center
      * @param book
-     * @returns {{x: number, y: number}}
+     * @returns {number}
      */
-    function getScoreCenter ( book: bookData ) {
-        var center = {
-            x: Paper.getPaperSize().width / 2,
-            y: Paper.getPaperSize().height / 2
-        };
+    function getYcenter ( book: bookData ) {
+        var y = Paper.getPaperSize().height / 2;
 
-        if ( Math.floor( book.avgScore ) == 1 ) {
-            center.y = ( Paper.getPaperSize().height / 10 ) * 9
-        } else {
-            var id = 5 - Math.floor( book.avgScore );
-            center.y = ( Paper.getPaperSize().height / 10 ) * ( 2 * id + 1 )
+        if ( Controllers.getCurrentContValue().y == Controllers.contValues.score ) {
+            if ( Math.floor( book.avgScore ) == 1 ) {
+                y = ( Paper.getPaperSize().height / 10 ) * 9
+            } else {
+                var id = 5 - Math.floor( book.avgScore );
+                y = ( Paper.getPaperSize().height / 10 ) * ( 2 * id + 1 )
+            }
         }
-        return center;
+        return y;
     }
 
     /**
-     * Calculate center position if filtered by score and year
+     * Calculate X of the center
      * @param book
-     * @returns {{x: number, y: number}}
+     * @returns {number}
      */
-    function getYearCenter ( book: bookData ) {
-        var yearData = years[ book.year ];
-        var center = {
-            x: Paper.getPaperSize().width / 2,
-            y: Paper.getPaperSize().height / 2
-        };
+    function getXcenter ( book: bookData ) {
+        var x = Paper.getPaperSize().width / 2;
 
-        if ( Math.floor( book.avgScore ) == 1 ) {
-            center.y = ( Paper.getPaperSize().height / 10 ) * 9
-        } else {
-            var id = 5 - Math.floor( book.avgScore );
-            center.y = ( Paper.getPaperSize().height / 10 ) * ( 2 * id + 1 )
+        if ( Controllers.getCurrentContValue().x == Controllers.contValues.year ) {
+            var yearData = years[ book.year ];
+            if ( yearData.index == 0 ) {
+                x = Paper.getPaperSize().width / (years.length * 2)
+            } else {
+                x = ( Paper.getPaperSize().width / (years.length * 2) ) * ( 2 * yearData.index + 1 )
+            }
         }
 
-        if ( yearData.index == 0 ) {
-            center.x = Paper.getPaperSize().width / (years.length * 2)
-        } else {
-            center.x = ( Paper.getPaperSize().width / (years.length * 2) ) * ( 2 * yearData.index + 1 )
-        }
-
-        return center;
+        return x;
     }
+
 }
