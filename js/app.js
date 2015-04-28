@@ -19,6 +19,7 @@ var Book;
     var maxRadius = 35;
     var relativeMaxRadius = 1;
     var years;
+    var prices;
     /**
      * Get all books data and calculate max radius (total number of votes) based on it's data.
      * @param books
@@ -174,6 +175,21 @@ var Book;
         if (voters > 0)
             score = score / voters;
         return score;
+    }
+    /**
+     * Round whole number
+     * @param price
+     * @returns {number}
+     */
+    function getRoundedPrice(price) {
+        var priceStr = String(Math.round(price));
+        var lastNum = parseInt(priceStr.slice(-1));
+        var result;
+        if (lastNum > 4)
+            result = parseInt(priceStr) + (10 - lastNum);
+        else
+            result = parseInt(priceStr) - lastNum;
+        return result;
     }
     /**
      * Calculate Y of the center

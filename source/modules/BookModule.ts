@@ -20,6 +20,7 @@ module Book {
     var relativeMaxRadius:number = 1;
 
     var years: any;
+    var prices: any;
 
     /**
      * Get all books data and calculate max radius (total number of votes) based on it's data.
@@ -63,6 +64,7 @@ module Book {
         years = {
             length: 0
         };
+
         for (var i=0, len=books.length; i<len; i++) {
             var voters = 0;
             books[i].avgScore = getAvgScore( books[i] );
@@ -174,6 +176,22 @@ module Book {
 
         if ( voters > 0 ) score = score / voters;
         return score;
+    }
+
+    /**
+     * Round whole number
+     * @param price
+     * @returns {number}
+     */
+    function getRoundedPrice( price: number ):number {
+        var priceStr:string = String( Math.round( price ) );
+        var lastNum:number = parseInt( priceStr.slice(-1) );
+        var result: number;
+
+        if ( lastNum > 4 ) result = parseInt( priceStr ) + ( 10 - lastNum );
+            else result = parseInt( priceStr ) - lastNum;
+
+        return result;
     }
 
     /**
