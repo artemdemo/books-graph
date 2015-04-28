@@ -6,7 +6,7 @@
 /// <reference path="modules/AxesModule.ts" />
 
 
-promise.get('data/books_rnd.json')
+promise.get('data/books_rnd_1.json')
     .then(function(error, data){
 
         var graph: booksObject = JSON.parse(data);

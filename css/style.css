@@ -31,8 +31,9 @@ body {
   border-top: 1px solid #ababab;
   padding-top: 5px;
   color: gray;
+  overflow: hidden;
 }
-.x-axis .year {
+.x-axis .node {
   padding: 0 4.6%;
 }
 /*--------------- Circles ---------------------*/

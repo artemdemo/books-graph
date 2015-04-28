@@ -5,7 +5,7 @@
     {
       "id": "553aa4ec8b5ddb9f56fd77ae",
       "bookName": "Zuvy",
-      "price": 12.12,
+      "price": 122.12,
       "author": "Ingrid Miranda",
       "year": 2008,
       "score": {
@@ -33,7 +33,7 @@
     {
       "id": "553aa4ecb9cd56021c82294e",
       "bookName": "Orbean",
-      "price": 9.27,
+      "price": 19.27,
       "author": "Brenda Romero",
       "year": 2015,
       "score": {
@@ -47,7 +47,7 @@
     {
       "id": "553aa4ec63e9d938cd35bc2c",
       "bookName": "Andershun",
-      "price": 2.74,
+      "price": 25.74,
       "author": "Fowler Hardin",
       "year": 2012,
       "score": {
@@ -61,7 +61,7 @@
     {
       "id": "553aa4ec178da5e4a6c7f07c",
       "bookName": "Idego",
-      "price": 7.45,
+      "price": 77.45,
       "author": "Mccormick Savage",
       "year": 2010,
       "score": {
@@ -75,7 +75,7 @@
     {
       "id": "553aa4ece1d359fd7081ba2f",
       "bookName": "Zensor",
-      "price": 9.44,
+      "price": 39.44,
       "author": "Fulton Munoz",
       "year": 2014,
       "score": {
@@ -89,7 +89,7 @@
     {
       "id": "553aa4ec2df9c60befda9938",
       "bookName": "Obones",
-      "price": 6.15,
+      "price": 46.15,
       "author": "Gena Rose",
       "year": 2013,
       "score": {
@@ -117,7 +117,7 @@
     {
       "id": "553aa4ec7d605e438aa96acd",
       "bookName": "Medalert",
-      "price": 8.41,
+      "price": 38.41,
       "author": "Crane Beard",
       "year": 2012,
       "score": {

@@ -1,18 +1,20 @@
 module Axes {
 
-    var $yearAxis: HTMLDivElement;
     var $scoreAxis: HTMLDivElement;
+    var $yearAxis: HTMLDivElement;
+    var $priceAxis: HTMLDivElement;
 
     var showAxisClass = 'show';
 
-    export enum Axis { year, score }
+    export enum Axis { year, score, price }
 
     /**
      * Adding axis to the graph
      */
     export function addAxes() {
-        createXaxis();
         createScoreAxis();
+        createYearsAxis();
+        createPriceAxis();
     }
 
     /**
@@ -20,16 +22,7 @@ module Axes {
      * @param axis
      */
     export function showAxis ( axis: Axis ) {
-        var $axis: HTMLDivElement;
-
-        switch( true ) {
-            case axis == Axis.year:
-                $axis = $yearAxis;
-                break;
-            case axis == Axis.score:
-                $axis = $scoreAxis;
-                break;
-        }
+        var $axis: HTMLDivElement = getAxisNode( axis );
 
         if ( ! new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className) ) {
             $axis.className += ' ' + showAxisClass;
@@ -41,19 +34,10 @@ module Axes {
      * @param axis
      */
     export function hideAxis ( axis: Axis ) {
-        var $axis: HTMLDivElement;
-        var className = 'show';
+        var $axis: HTMLDivElement = getAxisNode( axis );
 
-        switch( true ) {
-            case axis == Axis.year:
-                $axis = $yearAxis;
-                break;
-            case axis == Axis.score:
-                $axis = $scoreAxis;
-        }
-
-        if ( new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className) ) {
-            $axis.className = $axis.className.replace(new RegExp('(^|\\b) ' + className + '(\\b|$)', 'gi'), '');
+        if ( new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className) ) {
+            $axis.className = $axis.className.replace(new RegExp('(^|\\b) ' + showAxisClass + '(\\b|$)', 'gi'), '');
         }
     }
 
@@ -62,15 +46,7 @@ module Axes {
      * @param axis
      */
     export function toggleAxis ( axis: Axis ) {
-        var $axis: HTMLDivElement;
-
-        switch( true ) {
-            case axis == Axis.year:
-                $axis = $yearAxis;
-                break;
-            case axis == Axis.score:
-                $axis = $scoreAxis;
-        }
+        var $axis: HTMLDivElement = getAxisNode( axis );
 
         if ( new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className) ) {
             $axis.className = $axis.className.replace(new RegExp('(^|\\b) ' + showAxisClass + '(\\b|$)', 'gi'), '');
@@ -79,8 +55,26 @@ module Axes {
         }
     }
 
+    function getAxisNode( axis: Axis ): HTMLDivElement {
+        var $axis: HTMLDivElement;
+
+        switch( true ) {
+            case axis == Axis.year:
+                $axis = $yearAxis;
+                break;
+            case axis == Axis.score:
+                $axis = $scoreAxis;
+                break;
+            case axis == Axis.price:
+                $axis = $priceAxis;
+                break;
+        }
+
+        return $axis;
+    }
+
     /**
-     * Creating Y axis
+     * Creating Score axis - Y
      */
     function createScoreAxis() {
         $scoreAxis = document.createElement('div');
@@ -102,9 +96,9 @@ module Axes {
     }
 
     /**
-     * Creating X axis
+     * Creating Years axis - X
      */
-    function createXaxis() {
+    function createYearsAxis() {
         var years = Book.getYearsObject();
 
         $yearAxis = document.createElement('div');
@@ -117,10 +111,34 @@ module Axes {
             if ( years.hasOwnProperty(key) && parseInt(key) == parseInt(key) ) {
                 var $text: HTMLSpanElement = document.createElement('span');
 
-                $text.setAttribute('class', 'year');
+                $text.setAttribute('class', 'node year');
                 $text.appendChild( document.createTextNode( key ) );
 
                 $yearAxis.appendChild( $text );
+            }
+        }
+    }
+
+    /**
+     * Creating Price axis - X
+     */
+    function createPriceAxis() {
+        var prices = Book.getPricesObject();
+
+        $priceAxis = document.createElement('div');
+        $priceAxis.setAttribute('id', 'priceAxis-group');
+        $priceAxis.setAttribute('class', 'axis-group x-axis');
+
+        document.body.appendChild( $priceAxis );
+
+        for ( var key in prices ) {
+            if ( prices.hasOwnProperty(key) && parseInt(key) == parseInt(key) ) {
+                var $text: HTMLSpanElement = document.createElement('span');
+
+                $text.setAttribute('class', 'node price');
+                $text.appendChild( document.createTextNode( key ) );
+
+                $priceAxis.appendChild( $text );
             }
         }
     }

@@ -66,6 +66,9 @@ var Book;
         years = {
             length: 0
         };
+        prices = {
+            length: 0
+        };
         for (var i = 0, len = books.length; i < len; i++) {
             var voters = 0;
             books[i].avgScore = getAvgScore(books[i]);
@@ -84,9 +87,19 @@ var Book;
                 };
                 years.length++;
             }
+            if (prices.hasOwnProperty(String(getRoundedPrice(books[i].price)))) {
+                prices[getRoundedPrice(books[i].price)].members++;
+            }
+            else {
+                prices[getRoundedPrice(books[i].price)] = {
+                    members: 1,
+                    index: 0
+                };
+                prices.length++;
+            }
         }
         // Now I need to add index to each year.
-        // It will solve problem related to the fact tha I have no idea how many years there is and what is index each of them
+        // It will solve problem related to the fact that I have no idea how many years there is and what is index each of them
         // Index I need to determine position of each year
         var yearsIndex = 0;
         for (var key in years) {
@@ -94,6 +107,16 @@ var Book;
                 if (years[key].hasOwnProperty('index')) {
                     years[key].index = yearsIndex;
                     yearsIndex++;
+                }
+            }
+        }
+        // Same thing for the price list
+        var priceIndex = 0;
+        for (var key in prices) {
+            if (prices.hasOwnProperty(key)) {
+                if (prices[key].hasOwnProperty('index')) {
+                    prices[key].index = priceIndex;
+                    priceIndex++;
                 }
             }
         }
@@ -159,6 +182,12 @@ var Book;
     function getYearsObject() { return years; }
     Book.getYearsObject = getYearsObject;
     /**
+     * Return prices object
+     * @returns {*}
+     */
+    function getPricesObject() { return prices; }
+    Book.getPricesObject = getPricesObject;
+    /**
      * Calculate avg score of given book
      * @param book
      * @returns {number}
@@ -178,6 +207,8 @@ var Book;
     }
     /**
      * Round whole number
+     * 25.6 -> 30
+     * 124.3 -> 120
      * @param price
      * @returns {number}
      */
@@ -215,15 +246,25 @@ var Book;
      * @returns {number}
      */
     function getXcenter(book) {
-        var x = Paper.getPaperSize().width / 2;
+        var x;
+        var xValueArr;
+        var xValueData;
         if (Controllers.getCurrentContValue().x == Controllers.contValues.year) {
-            var yearData = years[book.year];
-            if (yearData.index == 0) {
-                x = Paper.getPaperSize().width / (years.length * 2);
-            }
-            else {
-                x = (Paper.getPaperSize().width / (years.length * 2)) * (2 * yearData.index + 1);
-            }
+            xValueData = years[book.year];
+            xValueArr = years;
+        }
+        else if (Controllers.getCurrentContValue().x == Controllers.contValues.price) {
+            xValueData = prices[getRoundedPrice(book.price)];
+            xValueArr = prices;
+        }
+        if (xValueData == undefined) {
+            x = Paper.getPaperSize().width / 2;
+        }
+        else if (xValueData.index == 0) {
+            x = Paper.getPaperSize().width / (xValueArr.length * 2);
+        }
+        else {
+            x = (Paper.getPaperSize().width / (xValueArr.length * 2)) * (2 * xValueData.index + 1);
         }
         return x;
     }
@@ -252,6 +293,7 @@ var Controllers;
             .addEventListener('click', function (e) {
             if (e.srcElement.attributes.hasOwnProperty('data-show')) {
                 var $btn = e.srcElement;
+                removeActiveClassInGroup($btn.parentElement.children);
                 // Check that source element has no active class and if no add one
                 if (!new RegExp('(^| )' + activeClass + '( |$)', 'gi').test($btn.className))
                     $btn.className += ' ' + activeClass;
@@ -273,11 +315,15 @@ var Controllers;
                 switch (true) {
                     case currentContValueX == contValues.year:
                         Axes.showAxis(Axes.Axis.year);
+                        Axes.hideAxis(Axes.Axis.price);
                         break;
                     case currentContValueX == contValues.price:
+                        Axes.hideAxis(Axes.Axis.year);
+                        Axes.showAxis(Axes.Axis.price);
                         break;
                     default:
                         Axes.hideAxis(Axes.Axis.year);
+                        Axes.hideAxis(Axes.Axis.price);
                 }
                 force.start();
             }
@@ -317,23 +363,42 @@ var Controllers;
         }
     }
     Controllers.toggleCurrentContValue = toggleCurrentContValue;
+    /**
+     * Remove activeClass from all buttons in given list.
+     * If list contain less then 2 elements - do nothing and return false.
+     * Otherwise button will always be pressed
+     * @param nodeList
+     * @returns {boolean}
+     */
+    function removeActiveClassInGroup(nodeList) {
+        if (nodeList.length < 2)
+            return false;
+        for (var i = 0, len = nodeList.length; i < len; i++) {
+            var $btn = nodeList[i];
+            $btn.className = $btn.className.replace(new RegExp('(^|\\b) ' + activeClass + '(\\b|$)', 'gi'), '');
+        }
+        return true;
+    }
 })(Controllers || (Controllers = {}));
 var Axes;
 (function (Axes) {
-    var $yearAxis;
     var $scoreAxis;
+    var $yearAxis;
+    var $priceAxis;
     var showAxisClass = 'show';
     (function (Axis) {
         Axis[Axis["year"] = 0] = "year";
         Axis[Axis["score"] = 1] = "score";
+        Axis[Axis["price"] = 2] = "price";
     })(Axes.Axis || (Axes.Axis = {}));
     var Axis = Axes.Axis;
     /**
      * Adding axis to the graph
      */
     function addAxes() {
-        createXaxis();
         createScoreAxis();
+        createYearsAxis();
+        createPriceAxis();
     }
     Axes.addAxes = addAxes;
     /**
@@ -341,15 +406,7 @@ var Axes;
      * @param axis
      */
     function showAxis(axis) {
-        var $axis;
-        switch (true) {
-            case axis == Axis.year:
-                $axis = $yearAxis;
-                break;
-            case axis == Axis.score:
-                $axis = $scoreAxis;
-                break;
-        }
+        var $axis = getAxisNode(axis);
         if (!new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className)) {
             $axis.className += ' ' + showAxisClass;
         }
@@ -360,17 +417,9 @@ var Axes;
      * @param axis
      */
     function hideAxis(axis) {
-        var $axis;
-        var className = 'show';
-        switch (true) {
-            case axis == Axis.year:
-                $axis = $yearAxis;
-                break;
-            case axis == Axis.score:
-                $axis = $scoreAxis;
-        }
-        if (new RegExp('(^| )' + className + '( |$)', 'gi').test($axis.className)) {
-            $axis.className = $axis.className.replace(new RegExp('(^|\\b) ' + className + '(\\b|$)', 'gi'), '');
+        var $axis = getAxisNode(axis);
+        if (new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className)) {
+            $axis.className = $axis.className.replace(new RegExp('(^|\\b) ' + showAxisClass + '(\\b|$)', 'gi'), '');
         }
     }
     Axes.hideAxis = hideAxis;
@@ -379,14 +428,7 @@ var Axes;
      * @param axis
      */
     function toggleAxis(axis) {
-        var $axis;
-        switch (true) {
-            case axis == Axis.year:
-                $axis = $yearAxis;
-                break;
-            case axis == Axis.score:
-                $axis = $scoreAxis;
-        }
+        var $axis = getAxisNode(axis);
         if (new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className)) {
             $axis.className = $axis.className.replace(new RegExp('(^|\\b) ' + showAxisClass + '(\\b|$)', 'gi'), '');
         }
@@ -395,8 +437,23 @@ var Axes;
         }
     }
     Axes.toggleAxis = toggleAxis;
+    function getAxisNode(axis) {
+        var $axis;
+        switch (true) {
+            case axis == Axis.year:
+                $axis = $yearAxis;
+                break;
+            case axis == Axis.score:
+                $axis = $scoreAxis;
+                break;
+            case axis == Axis.price:
+                $axis = $priceAxis;
+                break;
+        }
+        return $axis;
+    }
     /**
-     * Creating Y axis
+     * Creating Score axis - Y
      */
     function createScoreAxis() {
         $scoreAxis = document.createElement('div');
@@ -414,9 +471,9 @@ var Axes;
         }
     }
     /**
-     * Creating X axis
+     * Creating Years axis - X
      */
-    function createXaxis() {
+    function createYearsAxis() {
         var years = Book.getYearsObject();
         $yearAxis = document.createElement('div');
         $yearAxis.setAttribute('id', 'yearAxis-group');
@@ -425,9 +482,27 @@ var Axes;
         for (var key in years) {
             if (years.hasOwnProperty(key) && parseInt(key) == parseInt(key)) {
                 var $text = document.createElement('span');
-                $text.setAttribute('class', 'year');
+                $text.setAttribute('class', 'node year');
                 $text.appendChild(document.createTextNode(key));
                 $yearAxis.appendChild($text);
+            }
+        }
+    }
+    /**
+     * Creating Price axis - X
+     */
+    function createPriceAxis() {
+        var prices = Book.getPricesObject();
+        $priceAxis = document.createElement('div');
+        $priceAxis.setAttribute('id', 'priceAxis-group');
+        $priceAxis.setAttribute('class', 'axis-group x-axis');
+        document.body.appendChild($priceAxis);
+        for (var key in prices) {
+            if (prices.hasOwnProperty(key) && parseInt(key) == parseInt(key)) {
+                var $text = document.createElement('span');
+                $text.setAttribute('class', 'node price');
+                $text.appendChild(document.createTextNode(key));
+                $priceAxis.appendChild($text);
             }
         }
     }
@@ -438,7 +513,7 @@ var Axes;
 /// <reference path="modules/BookModule.ts" />
 /// <reference path="modules/ControllersModule.ts" />
 /// <reference path="modules/AxesModule.ts" />
-promise.get('data/books_rnd.json')
+promise.get('data/books_rnd_1.json')
     .then(function (error, data) {
     var graph = JSON.parse(data);
     var width = Paper.getPaperSize().width, height = Paper.getPaperSize().height;

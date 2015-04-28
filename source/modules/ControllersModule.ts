@@ -20,6 +20,8 @@ module Controllers {
                 if ( e.srcElement.attributes.hasOwnProperty('data-show') ) {
                     var $btn = ( <HTMLBaseElement> e.srcElement );
 
+                    removeActiveClassInGroup( $btn.parentElement.children );
+
                     // Check that source element has no active class and if no add one
                     if ( ! new RegExp('(^| )' + activeClass + '( |$)', 'gi').test($btn.className) )
                         $btn.className += ' ' + activeClass;
@@ -47,11 +49,15 @@ module Controllers {
                     switch( true ) {
                         case currentContValueX == contValues.year:
                             Axes.showAxis( Axes.Axis.year );
+                            Axes.hideAxis( Axes.Axis.price );
                             break;
                         case currentContValueX == contValues.price:
+                            Axes.hideAxis( Axes.Axis.year );
+                            Axes.showAxis( Axes.Axis.price );
                             break;
                         default:
                             Axes.hideAxis( Axes.Axis.year );
+                            Axes.hideAxis( Axes.Axis.price );
                     }
 
                     force.start();
@@ -90,6 +96,24 @@ module Controllers {
                     currentContValueY = contValues.all;
                 break;
         }
+    }
+
+    /**
+     * Remove activeClass from all buttons in given list.
+     * If list contain less then 2 elements - do nothing and return false.
+     * Otherwise button will always be pressed
+     * @param nodeList
+     * @returns {boolean}
+     */
+    function removeActiveClassInGroup( nodeList: NodeList ) {
+        if ( nodeList.length < 2 ) return false;
+
+        for ( var i=0, len=nodeList.length; i<len; i++ ) {
+            var $btn = <HTMLButtonElement> nodeList[i];
+            $btn.className = $btn.className.replace(new RegExp('(^|\\b) ' + activeClass + '(\\b|$)', 'gi'), '');
+        }
+
+        return true;
     }
 
 }

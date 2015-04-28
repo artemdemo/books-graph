@@ -65,6 +65,10 @@ module Book {
             length: 0
         };
 
+        prices = {
+            length: 0
+        };
+
         for (var i=0, len=books.length; i<len; i++) {
             var voters = 0;
             books[i].avgScore = getAvgScore( books[i] );
@@ -81,9 +85,18 @@ module Book {
                 };
                 years.length++;
             }
+            if ( prices.hasOwnProperty( String( getRoundedPrice(books[i].price) ) ) ) {
+                prices[getRoundedPrice(books[i].price)].members++;
+            } else {
+                prices[getRoundedPrice(books[i].price)] = {
+                    members: 1, // how many books are in this price segment
+                    index: 0
+                };
+                prices.length++;
+            }
         }
         // Now I need to add index to each year.
-        // It will solve problem related to the fact tha I have no idea how many years there is and what is index each of them
+        // It will solve problem related to the fact that I have no idea how many years there is and what is index each of them
         // Index I need to determine position of each year
         var yearsIndex = 0;
         for ( var key in years ) {
@@ -91,6 +104,16 @@ module Book {
                 if ( years[key].hasOwnProperty('index') ) {
                     years[key].index = yearsIndex;
                     yearsIndex++;
+                }
+            }
+        }
+        // Same thing for the price list
+        var priceIndex = 0;
+        for ( var key in prices ) {
+            if (prices.hasOwnProperty(key)) {
+                if ( prices[key].hasOwnProperty('index') ) {
+                    prices[key].index = priceIndex;
+                    priceIndex++;
                 }
             }
         }
@@ -159,6 +182,12 @@ module Book {
     export function getYearsObject() { return years; }
 
     /**
+     * Return prices object
+     * @returns {*}
+     */
+    export function getPricesObject() { return prices; }
+
+    /**
      * Calculate avg score of given book
      * @param book
      * @returns {number}
@@ -180,6 +209,8 @@ module Book {
 
     /**
      * Round whole number
+     * 25.6 -> 30
+     * 124.3 -> 120
      * @param price
      * @returns {number}
      */
@@ -219,15 +250,24 @@ module Book {
      * @returns {number}
      */
     function getXcenter ( book: bookData ) {
-        var x = Paper.getPaperSize().width / 2;
+        var x;
+        var xValueArr;
+        var xValueData;
 
         if ( Controllers.getCurrentContValue().x == Controllers.contValues.year ) {
-            var yearData = years[ book.year ];
-            if ( yearData.index == 0 ) {
-                x = Paper.getPaperSize().width / (years.length * 2)
-            } else {
-                x = ( Paper.getPaperSize().width / (years.length * 2) ) * ( 2 * yearData.index + 1 )
-            }
+            xValueData = years[ book.year ];
+            xValueArr = years;
+        } else if ( Controllers.getCurrentContValue().x == Controllers.contValues.price ) {
+            xValueData = prices[ getRoundedPrice(book.price) ];
+            xValueArr = prices;
+        }
+
+        if ( xValueData == undefined ) {
+            x = Paper.getPaperSize().width / 2;
+        } else if ( xValueData.index == 0 ) {
+            x = Paper.getPaperSize().width / (xValueArr.length * 2)
+        } else {
+            x = ( Paper.getPaperSize().width / (xValueArr.length * 2) ) * ( 2 * xValueData.index + 1 )
         }
 
         return x;
