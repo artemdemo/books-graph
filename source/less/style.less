@@ -2,11 +2,32 @@
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 #controllers .btn {
   outline: none;
 }
+
+#tool-tip {
+  opacity: 0;
+  position: absolute;
+  max-width: 250px;
+  min-width: 200px;
+  border: 1px solid #CA9536;
+  background-color: rgba(252, 194, 48, 0.91);
+  text-shadow: 1px 1px rgba(255, 255, 255, 0.31);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 13px;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+
+  &.visible { opacity: 1; }
+
+  .title { font-weight: 700; }
+}
+
 
 
 /*--------------- Axes ---------------------*/
@@ -19,10 +40,8 @@ body {
   opacity: 0;
   -webkit-transition: 0.5s;
   transition: 0.5s;
-}
 
-.axis-group.show {
-  opacity: 1;
+  &.visible { opacity: 1; }
 }
 
 .y-axis {
@@ -31,14 +50,14 @@ body {
   bottom: 10%;
   padding-right: 13px;
   border-right: 1px solid @borderColor;
-
-  .score {}
 }
 
 .x-axis {
   bottom: 44px;
   left: 8%;
   right: 8%;
+  display: -webkit-flex;
+  display: flex;
   text-align: center;
   border-top: 1px solid @borderColor;
   padding-top: 5px;
@@ -46,7 +65,12 @@ body {
   overflow: hidden;
 
   .node {
-    padding: 0 4.6%;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-flex: 1;
+    flex: 1;
   }
 }
 

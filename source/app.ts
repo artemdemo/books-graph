@@ -4,6 +4,7 @@
 /// <reference path="modules/BookModule.ts" />
 /// <reference path="modules/ControllersModule.ts" />
 /// <reference path="modules/AxesModule.ts" />
+/// <reference path="modules/TooltipModule.ts" />
 
 
 promise.get('data/books_rnd_1.json')

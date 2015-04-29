@@ -163,16 +163,22 @@ module Book {
         return book.voters * -0.9;
     }
 
+    /**
+     * On mouse enter book circle
+     * @param book
+     */
     export function onMouseEnter( book:bookData ) {
-        var $circle = document.getElementById( book.id );
-        //$circle.setAttribute('class', $circle.getAttribute('class') + ' active' );
+
+        Tooltip.constructTooltip( book );
     }
 
+    /**
+     * On mouse leave book circle
+     * @param book
+     */
     export function onMouseLeave( book:bookData ) {
-        var $circle = document.getElementById( book.id );
-        var className = $circle.getAttribute('class');
-        className = className.replace(new RegExp('(^|\\b)' + 'active'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-        //$circle.setAttribute('class', className );
+
+        Tooltip.dismantleTooltip();
     }
 
     /**

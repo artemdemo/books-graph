@@ -4,7 +4,7 @@ module Axes {
     var $yearAxis: HTMLDivElement;
     var $priceAxis: HTMLDivElement;
 
-    var showAxisClass = 'show';
+    var showAxisClass = 'visible';
 
     export enum Axis { year, score, price }
 

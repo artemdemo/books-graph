@@ -163,16 +163,20 @@ var Book;
         return book.voters * -0.9;
     }
     Book.getCharge = getCharge;
+    /**
+     * On mouse enter book circle
+     * @param book
+     */
     function onMouseEnter(book) {
-        var $circle = document.getElementById(book.id);
-        //$circle.setAttribute('class', $circle.getAttribute('class') + ' active' );
+        Tooltip.constructTooltip(book);
     }
     Book.onMouseEnter = onMouseEnter;
+    /**
+     * On mouse leave book circle
+     * @param book
+     */
     function onMouseLeave(book) {
-        var $circle = document.getElementById(book.id);
-        var className = $circle.getAttribute('class');
-        className = className.replace(new RegExp('(^|\\b)' + 'active'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-        //$circle.setAttribute('class', className );
+        Tooltip.dismantleTooltip();
     }
     Book.onMouseLeave = onMouseLeave;
     /**
@@ -385,7 +389,7 @@ var Axes;
     var $scoreAxis;
     var $yearAxis;
     var $priceAxis;
-    var showAxisClass = 'show';
+    var showAxisClass = 'visible';
     (function (Axis) {
         Axis[Axis["year"] = 0] = "year";
         Axis[Axis["score"] = 1] = "score";
@@ -507,12 +511,64 @@ var Axes;
         }
     }
 })(Axes || (Axes = {}));
+var Tooltip;
+(function (Tooltip) {
+    var showTooltipClass = 'visible';
+    var toolTipID = 'tool-tip';
+    var $toolTip = null;
+    var currentBook = null;
+    /**
+     * Construct tooltip with new book data
+     * @param book
+     */
+    function constructTooltip(book) {
+        currentBook = book;
+        $toolTip = document.getElementById(toolTipID);
+        showTooltip();
+    }
+    Tooltip.constructTooltip = constructTooltip;
+    /**
+     * Dismantle (remove) tooltip from view
+     */
+    function dismantleTooltip() {
+        if ($toolTip != null) {
+            hideTooltip();
+        }
+    }
+    Tooltip.dismantleTooltip = dismantleTooltip;
+    /**
+     * Show tooltip in DOM
+     */
+    function showTooltip() {
+        $toolTip.getElementsByClassName('title')[0].innerHTML = currentBook.name;
+        $toolTip.getElementsByClassName('author')[0].innerHTML = currentBook.author;
+        $toolTip.getElementsByClassName('price')[0].innerHTML = currentBook.price.toFixed(2);
+        $toolTip.getElementsByClassName('avgScore')[0].innerHTML = currentBook.avgScore.toFixed(2);
+        $toolTip.getElementsByClassName('voters')[0].innerHTML = String(currentBook.voters);
+        if (!new RegExp('(^| )' + showTooltipClass + '( |$)', 'gi').test($toolTip.className)) {
+            $toolTip.className += ' ' + showTooltipClass;
+            document.addEventListener('mousemove', toolTipMove);
+        }
+    }
+    function hideTooltip() {
+        if (new RegExp('(^| )' + showTooltipClass + '( |$)', 'gi').test($toolTip.className)) {
+            $toolTip.className = $toolTip.className.replace(new RegExp('(^|\\b) ' + showTooltipClass + '(\\b|$)', 'gi'), '');
+            document.removeEventListener('mousemove', toolTipMove);
+        }
+    }
+    function toolTipMove(e) {
+        // ToDo: on the right circles tooltip can appear outside of body. You need to move it left in order to see the content
+        $toolTip.style.left = String(e.pageX + 3) + 'px';
+        $toolTip.style.top = String(e.pageY + 3) + 'px';
+    }
+})(Tooltip || (Tooltip = {}));
 /// <reference path="d.ts/d3.d.ts" />
 /// <reference path="../vendor/promise.d.ts" />
 /// <reference path="modules/PaperModule.ts" />
 /// <reference path="modules/BookModule.ts" />
 /// <reference path="modules/ControllersModule.ts" />
 /// <reference path="modules/AxesModule.ts" />
+/// <reference path="modules/TooltipModule.ts" />
 promise.get('data/books_rnd_1.json')
     .then(function (error, data) {
     var graph = JSON.parse(data);
