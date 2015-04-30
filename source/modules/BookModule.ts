@@ -7,6 +7,8 @@ interface bookData {
     avgScore?: number;
     voters?: number;
     year: number;
+    x?: number;
+    y?: number;
 }
 
 interface booksObject {

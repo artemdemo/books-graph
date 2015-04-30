@@ -42,6 +42,7 @@ module Tooltip {
         if ( ! new RegExp('(^| )' + showTooltipClass + '( |$)', 'gi').test($toolTip.className) ) {
             $toolTip.className += ' ' + showTooltipClass;
             document.addEventListener('mousemove', toolTipMove);
+
         }
     }
 
@@ -49,6 +50,7 @@ module Tooltip {
         if ( new RegExp('(^| )' + showTooltipClass + '( |$)', 'gi').test($toolTip.className) ) {
             $toolTip.className = $toolTip.className.replace(new RegExp('(^|\\b) ' + showTooltipClass + '(\\b|$)', 'gi'), '');
             document.removeEventListener('mousemove', toolTipMove);
+            $toolTip.style.left = '-500px';
         }
     }
 
