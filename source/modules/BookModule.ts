@@ -73,7 +73,9 @@ module Book {
 
         for (var i=0, len=books.length; i<len; i++) {
             var voters = 0;
-            books[i].avgScore = getAvgScore( books[i] );
+
+            if ( ! books[i].hasOwnProperty('avgScore') ) books[i].avgScore = getAvgScore( books[i] );
+
             for ( var key in books[i].score ) {
                 if ( books[i].score.hasOwnProperty(key) ) voters += books[i].score[key]
             }

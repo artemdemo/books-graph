@@ -71,7 +71,8 @@ var Book;
         };
         for (var i = 0, len = books.length; i < len; i++) {
             var voters = 0;
-            books[i].avgScore = getAvgScore(books[i]);
+            if (!books[i].hasOwnProperty('avgScore'))
+                books[i].avgScore = getAvgScore(books[i]);
             for (var key in books[i].score) {
                 if (books[i].score.hasOwnProperty(key))
                     voters += books[i].score[key];
@@ -570,9 +571,10 @@ var Tooltip;
 /// <reference path="modules/ControllersModule.ts" />
 /// <reference path="modules/AxesModule.ts" />
 /// <reference path="modules/TooltipModule.ts" />
-promise.get('data/books_rnd_1.json')
+// http://localhost:1337/books
+promise.get('data/books.json')
     .then(function (error, data) {
-    var graph = JSON.parse(data);
+    var graphBooks = JSON.parse(data);
     var width = Paper.getPaperSize().width, height = Paper.getPaperSize().height;
     var force, svg, node;
     /*
@@ -580,19 +582,19 @@ promise.get('data/books_rnd_1.json')
      *  avgScore - average score of the book
      *  voters - number of voters
      */
-    graph.Books = Book.addSpecialData(graph.Books);
+    graphBooks = Book.addSpecialData(graphBooks);
     force = d3.layout.force()
         .charge(Book.getCharge)
         .linkDistance(10)
         .size([width, height])
-        .nodes(graph.Books)
+        .nodes(graphBooks)
         .start();
     svg = d3.select("body").append("svg")
         .attr("width", width)
         .attr("height", height);
-    Book.calculateRelativeMaxRadius(graph.Books);
+    Book.calculateRelativeMaxRadius(graphBooks);
     node = svg.selectAll(".node")
-        .data(graph.Books)
+        .data(graphBooks)
         .enter().append("circle")
         .attr("class", function (d) { return Book.getCircleClass(d); })
         .attr("r", function (d) { return Book.getBookRadius(d); })
@@ -609,7 +611,7 @@ promise.get('data/books_rnd_1.json')
         node.attr("cx", function (d) { return d.x; })
             .attr("cy", function (d) { return d.y; });
     });
-    // Binding events to controll buttons
+    // Binding events to control buttons
     Controllers.bindEvents(force);
     // Adding axes
     Axes.addAxes();

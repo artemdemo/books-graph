@@ -6,11 +6,11 @@
 /// <reference path="modules/AxesModule.ts" />
 /// <reference path="modules/TooltipModule.ts" />
 
-
-promise.get('data/books_rnd_1.json')
+// http://localhost:1337/books
+promise.get('data/books.json')
     .then(function(error, data){
 
-        var graph: booksObject = JSON.parse(data);
+        var graphBooks: bookData[] = JSON.parse(data);
 
         var width = Paper.getPaperSize().width,
             height = Paper.getPaperSize().height;
@@ -22,23 +22,23 @@ promise.get('data/books_rnd_1.json')
          *  avgScore - average score of the book
          *  voters - number of voters
          */
-        graph.Books = Book.addSpecialData( graph.Books );
+        graphBooks = Book.addSpecialData( graphBooks );
 
         force = d3.layout.force()
             .charge( Book.getCharge )
             .linkDistance(10)
             .size([width, height])
-            .nodes(graph.Books)
+            .nodes(graphBooks)
             .start();
 
         svg = d3.select("body").append("svg")
             .attr("width", width)
             .attr("height", height);
 
-        Book.calculateRelativeMaxRadius(graph.Books);
+        Book.calculateRelativeMaxRadius(graphBooks);
 
         node = svg.selectAll(".node")
-            .data(graph.Books)
+            .data(graphBooks)
             .enter().append("circle")
             .attr("class", function(d){ return Book.getCircleClass( <bookData>d ) })
             .attr("r", function(d){ return Book.getBookRadius( <bookData>d ) })
@@ -58,7 +58,7 @@ promise.get('data/books_rnd_1.json')
                 .attr("cy", function(d) { return d.y; });
         });
 
-        // Binding events to controll buttons
+        // Binding events to control buttons
         Controllers.bindEvents( force );
 
         // Adding axes
