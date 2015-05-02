@@ -18,7 +18,6 @@ var Book;
 (function (Book) {
     var maxRadius = 35;
     var relativeMaxRadius = 1;
-    var years;
     var scores;
     /**
      * Get all books data and calculate max radius (total number of votes) based on it's data.
@@ -64,9 +63,6 @@ var Book;
      * @returns {bookData[]}
      */
     function addSpecialData(books) {
-        years = {
-            length: 0
-        };
         // Min and max scores will help to separate nodes by score.
         // I need it, case I can't assume that it will be from 1 to 5 [sad face]
         var minScore = null;
@@ -93,31 +89,8 @@ var Book;
                     voters += books[i].score[key];
             }
             books[i].voters = voters;
-            // Save year data in special object
-            if (years.hasOwnProperty(String(books[i].year))) {
-                years[books[i].year].voters++;
-            }
-            else {
-                years[books[i].year] = {
-                    voters: 0,
-                    index: 0
-                };
-                years.length++;
-            }
         }
         Prices.create(books);
-        // Now I need to add index to each year.
-        // It will solve problem related to the fact that I have no idea how many years there is and what is index each of them
-        // Index I need to determine position of each year
-        var yearsIndex = 0;
-        for (var key in years) {
-            if (years.hasOwnProperty(key)) {
-                if (years[key].hasOwnProperty('index')) {
-                    years[key].index = yearsIndex;
-                    yearsIndex++;
-                }
-            }
-        }
         return books;
     }
     Book.addSpecialData = addSpecialData;
@@ -178,12 +151,6 @@ var Book;
     }
     Book.onMouseLeave = onMouseLeave;
     /**
-     * Return years object
-     * @returns {*}
-     */
-    function getYearsObject() { return years; }
-    Book.getYearsObject = getYearsObject;
-    /**
      * Calculate avg score of given book
      * @param book
      * @returns {number}
@@ -229,6 +196,8 @@ var Book;
         var xValueLength;
         var xValueIndex;
         if (Controllers.getCurrentContValue().x == Controllers.contValues.year) {
+            xValueIndex = Years.getDataIndex(book.year);
+            xValueLength = Years.getDataLength();
         }
         else if (Controllers.getCurrentContValue().x == Controllers.contValues.price) {
             xValueIndex = Prices.getDataIndex(book.price);
@@ -451,7 +420,7 @@ var Axes;
      * Creating Years axis - X
      */
     function createYearsAxis() {
-        var years = Book.getYearsObject();
+        var years = Years.getMainObject();
         $yearAxis = document.createElement('div');
         $yearAxis.setAttribute('id', 'yearAxis-group');
         $yearAxis.setAttribute('class', 'axis-group x-axis');
@@ -614,6 +583,45 @@ var PricesClass = (function () {
     return PricesClass;
 })();
 var Prices = new PricesClass();
+var YearsClass = (function () {
+    function YearsClass() {
+    }
+    YearsClass.prototype.create = function (books) {
+        this.years = {
+            length: 0
+        };
+        for (var i = 0, len = books.length; i < len; i++) {
+            // Save year data in special object
+            if (this.years.hasOwnProperty(String(books[i].year))) {
+                this.years[books[i].year].voters++;
+            }
+            else {
+                this.years[books[i].year] = {
+                    voters: 0,
+                    index: 0
+                };
+                this.years.length++;
+            }
+        }
+        // Now I need to add index to each year.
+        // It will solve problem related to the fact that I have no idea how many years there is and what is index each of them
+        // Index I need to determine position of each year
+        var yearsIndex = 0;
+        for (var key in this.years) {
+            if (this.years.hasOwnProperty(key)) {
+                if (this.years[key].hasOwnProperty('index')) {
+                    this.years[key].index = yearsIndex;
+                    yearsIndex++;
+                }
+            }
+        }
+    };
+    YearsClass.prototype.getMainObject = function () { return this.years; };
+    YearsClass.prototype.getDataIndex = function (year) { return this.years[year]; };
+    YearsClass.prototype.getDataLength = function () { return this.years.length; };
+    return YearsClass;
+})();
+var Years = new YearsClass();
 /// <reference path="d.ts/d3.d.ts" />
 /// <reference path="../vendor/promise.d.ts" />
 /// <reference path="interfaces.ts" />
@@ -623,6 +631,7 @@ var Prices = new PricesClass();
 /// <reference path="modules/AxesModule.ts" />
 /// <reference path="modules/TooltipModule.ts" />
 /// <reference path="classes/PricesClass.ts" />
+/// <reference path="classes/YearsClass.ts" />
 // http://localhost:1337/books
 promise.get('data/books.json')
     .then(function (error, data) {

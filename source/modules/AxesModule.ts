@@ -100,7 +100,7 @@ module Axes {
      * Creating Years axis - X
      */
     function createYearsAxis() {
-        var years = Book.getYearsObject();
+        var years = Years.getMainObject();
 
         $yearAxis = document.createElement('div');
         $yearAxis.setAttribute('id', 'yearAxis-group');

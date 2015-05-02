@@ -3,7 +3,6 @@ module Book {
     var maxRadius:number = 35;
     var relativeMaxRadius:number = 1;
 
-    var years: dataObjArray;
     var scores: dataObjArray;
 
     /**
@@ -46,9 +45,6 @@ module Book {
      * @returns {bookData[]}
      */
     export function addSpecialData( books: bookData[] ) {
-        years = {
-            length: 0
-        };
 
         // Min and max scores will help to separate nodes by score.
         // I need it, case I can't assume that it will be from 1 to 5 [sad face]
@@ -76,35 +72,11 @@ module Book {
             }
             books[i].voters = voters;
 
-            // Save year data in special object
-            if ( years.hasOwnProperty( String(books[i].year) ) ) {
-                years[books[i].year].voters++;
-            } else {
-                years[books[i].year] = {
-                    voters: 0,
-                    index: 0
-                };
-                years.length++;
-            }
-
             // Same for score data
             //console.log( books[i].avgScore );
         }
 
         Prices.create( books );
-
-        // Now I need to add index to each year.
-        // It will solve problem related to the fact that I have no idea how many years there is and what is index each of them
-        // Index I need to determine position of each year
-        var yearsIndex = 0;
-        for ( var key in years ) {
-            if (years.hasOwnProperty(key)) {
-                if ( years[key].hasOwnProperty('index') ) {
-                    years[key].index = yearsIndex;
-                    yearsIndex++;
-                }
-            }
-        }
 
         return books;
     }
@@ -171,12 +143,6 @@ module Book {
     }
 
     /**
-     * Return years object
-     * @returns {*}
-     */
-    export function getYearsObject() { return years; }
-
-    /**
      * Calculate avg score of given book
      * @param book
      * @returns {number}
@@ -227,8 +193,8 @@ module Book {
         var xValueIndex;
 
         if ( Controllers.getCurrentContValue().x == Controllers.contValues.year ) {
-            //xValueIndex = years[ book.year ];
-            //xValueArr = years;
+            xValueIndex = Years.getDataIndex( book.year );
+            xValueLength = Years.getDataLength();
         } else if ( Controllers.getCurrentContValue().x == Controllers.contValues.price ) {
             xValueIndex = Prices.getDataIndex( book.price );
             xValueLength = Prices.getDataLength();
