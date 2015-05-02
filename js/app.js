@@ -91,6 +91,8 @@ var Book;
             books[i].voters = voters;
         }
         Prices.create(books);
+        Years.create(books);
+        AvgScores.create(books);
         return books;
     }
     Book.addSpecialData = addSpecialData;
@@ -174,15 +176,23 @@ var Book;
      * @returns {number}
      */
     function getYcenter(book) {
-        var y = Paper.getPaperSize().height / 2;
-        if (Controllers.getCurrentContValue().y == Controllers.contValues.score) {
-            if (Math.floor(book.avgScore) == 1) {
-                y = (Paper.getPaperSize().height / 10) * 9;
-            }
-            else {
-                var id = 5 - Math.floor(book.avgScore);
-                y = (Paper.getPaperSize().height / 10) * (2 * id + 1);
-            }
+        var y;
+        var yValueIndex;
+        var yValueLength;
+        if (Controllers.getCurrentContValue().y == Controllers.contValues.avgScore) {
+            yValueIndex = AvgScores.getDataIndex(book.avgScore);
+            yValueLength = AvgScores.getDataLength();
+        }
+        else if (Controllers.getCurrentContValue().y == Controllers.contValues.artScore) {
+        }
+        if (yValueIndex == undefined) {
+            y = Paper.getPaperSize().height / 2;
+        }
+        else if (yValueIndex == 0) {
+            y = Paper.getPaperSize().height / (yValueLength * 2);
+        }
+        else {
+            y = (Paper.getPaperSize().height / (yValueLength * 2)) * (2 * yValueIndex + 1);
         }
         return y;
     }
@@ -222,9 +232,10 @@ var Controllers;
      */
     (function (contValues) {
         contValues[contValues["all"] = 0] = "all";
-        contValues[contValues["score"] = 1] = "score";
-        contValues[contValues["year"] = 2] = "year";
-        contValues[contValues["price"] = 3] = "price";
+        contValues[contValues["avgScore"] = 1] = "avgScore";
+        contValues[contValues["artScore"] = 2] = "artScore";
+        contValues[contValues["year"] = 3] = "year";
+        contValues[contValues["price"] = 4] = "price";
     })(Controllers.contValues || (Controllers.contValues = {}));
     var contValues = Controllers.contValues;
     var currentContValueX = contValues.all;
@@ -251,25 +262,31 @@ var Controllers;
                 );
                 // Switching Y axes
                 switch (true) {
-                    case currentContValueY == contValues.score:
-                        Axes.showAxis(Axes.Axis.score);
+                    case currentContValueY == contValues.avgScore:
+                        Axes.showAxis(contValues.avgScore);
+                        Axes.hideAxis(contValues.artScore);
+                        break;
+                    case currentContValueY == contValues.artScore:
+                        Axes.hideAxis(contValues.avgScore);
+                        Axes.showAxis(contValues.artScore);
                         break;
                     default:
-                        Axes.hideAxis(Axes.Axis.score);
+                        Axes.hideAxis(contValues.avgScore);
+                        Axes.hideAxis(contValues.artScore);
                 }
                 // Switching X axes
                 switch (true) {
                     case currentContValueX == contValues.year:
-                        Axes.showAxis(Axes.Axis.year);
-                        Axes.hideAxis(Axes.Axis.price);
+                        Axes.showAxis(contValues.year);
+                        Axes.hideAxis(contValues.price);
                         break;
                     case currentContValueX == contValues.price:
-                        Axes.hideAxis(Axes.Axis.year);
-                        Axes.showAxis(Axes.Axis.price);
+                        Axes.hideAxis(contValues.year);
+                        Axes.showAxis(contValues.price);
                         break;
                     default:
-                        Axes.hideAxis(Axes.Axis.year);
-                        Axes.hideAxis(Axes.Axis.price);
+                        Axes.hideAxis(contValues.year);
+                        Axes.hideAxis(contValues.price);
                 }
                 force.start();
             }
@@ -328,21 +345,17 @@ var Controllers;
 })(Controllers || (Controllers = {}));
 var Axes;
 (function (Axes) {
-    var $scoreAxis;
+    var $artScoreAxis;
+    var $avgScoreAxis;
     var $yearAxis;
     var $priceAxis;
     var showAxisClass = 'visible';
-    (function (Axis) {
-        Axis[Axis["year"] = 0] = "year";
-        Axis[Axis["score"] = 1] = "score";
-        Axis[Axis["price"] = 2] = "price";
-    })(Axes.Axis || (Axes.Axis = {}));
-    var Axis = Axes.Axis;
     /**
      * Adding axis to the graph
      */
     function addAxes() {
-        createScoreAxis();
+        createAvgScoreAxis();
+        createArtScoreAxis();
         createYearsAxis();
         createPriceAxis();
     }
@@ -386,34 +399,56 @@ var Axes;
     function getAxisNode(axis) {
         var $axis;
         switch (true) {
-            case axis == Axis.year:
+            case axis == Controllers.contValues.year:
                 $axis = $yearAxis;
                 break;
-            case axis == Axis.score:
-                $axis = $scoreAxis;
+            case axis == Controllers.contValues.avgScore:
+                $axis = $avgScoreAxis;
                 break;
-            case axis == Axis.price:
+            case axis == Controllers.contValues.artScore:
+                $axis = $artScoreAxis;
+                break;
+            case axis == Controllers.contValues.price:
                 $axis = $priceAxis;
                 break;
         }
         return $axis;
     }
     /**
-     * Creating Score axis - Y
+     * Creating Art Score axis - Y
      */
-    function createScoreAxis() {
-        $scoreAxis = document.createElement('div');
-        $scoreAxis.setAttribute('id', 'scoreAxis-group');
-        $scoreAxis.setAttribute('class', 'axis-group y-axis');
-        $scoreAxis.style.top = (Paper.getPaperSize().height / 10) * 2 + 'px';
-        document.body.appendChild($scoreAxis);
+    function createArtScoreAxis() {
+        $artScoreAxis = document.createElement('div');
+        $artScoreAxis.setAttribute('id', 'artScoreAxis-group');
+        $artScoreAxis.setAttribute('class', 'axis-group y-axis');
+        $artScoreAxis.style.top = (Paper.getPaperSize().height / 10) * 2 + 'px';
+        document.body.appendChild($artScoreAxis);
         for (var i = 4; i > 0; i--) {
             var $text = document.createElement('div');
-            $text.setAttribute('class', 'score');
+            $text.setAttribute('class', 'node score');
             $text.appendChild(document.createTextNode(String(i)));
             if (i != 4)
                 $text.style.marginTop = (Paper.getPaperSize().height / 10) * 2.2 + 'px';
-            $scoreAxis.appendChild($text);
+            $artScoreAxis.appendChild($text);
+        }
+    }
+    /**
+     * Creating Average Score axis - Y
+     */
+    function createAvgScoreAxis() {
+        var avgScores = AvgScores.getMainObject();
+        $avgScoreAxis = document.createElement('div');
+        $avgScoreAxis.setAttribute('id', 'avgScoreAxis-group');
+        $avgScoreAxis.setAttribute('class', 'axis-group y-axis');
+        $avgScoreAxis.style.top = (Paper.getPaperSize().height / 10) * 2 + 'px';
+        document.body.appendChild($avgScoreAxis);
+        for (var key in avgScores) {
+            if (avgScores.hasOwnProperty(key) && parseInt(key) == parseInt(key)) {
+                var $text = document.createElement('div');
+                $text.setAttribute('class', 'node score');
+                $text.appendChild(document.createTextNode(key));
+                $avgScoreAxis.appendChild($text);
+            }
         }
     }
     /**
@@ -586,11 +621,17 @@ var Prices = new PricesClass();
 var YearsClass = (function () {
     function YearsClass() {
     }
+    /**
+     * Creating years data
+     * @param books
+     */
     YearsClass.prototype.create = function (books) {
         this.years = {
             length: 0
         };
         for (var i = 0, len = books.length; i < len; i++) {
+            if (!books[i].year)
+                continue;
             // Save year data in special object
             if (this.years.hasOwnProperty(String(books[i].year))) {
                 this.years[books[i].year].voters++;
@@ -616,12 +657,85 @@ var YearsClass = (function () {
             }
         }
     };
+    /**
+     * Return years object
+     * @returns {*}
+     */
     YearsClass.prototype.getMainObject = function () { return this.years; };
-    YearsClass.prototype.getDataIndex = function (year) { return this.years[year]; };
+    /**
+     * Return index of given year in array of Years.
+     * Will return undefined if there is no such year
+     * @param year
+     * @returns {number|undefined}
+     */
+    YearsClass.prototype.getDataIndex = function (year) { return this.years[year].index; };
+    /**
+     * Return length of years array
+     * @returns {number}
+     */
     YearsClass.prototype.getDataLength = function () { return this.years.length; };
     return YearsClass;
 })();
 var Years = new YearsClass();
+var AvgScoresClass = (function () {
+    function AvgScoresClass() {
+        this.scoreParts = 4;
+        // Min and max scores will help to separate nodes by score.
+        // I need it, case I can't assume that it will be from 1 to 5 [sad face]
+        this.minAvgScore = null;
+        this.maxAvgScore = null;
+        this.partValue = null;
+    }
+    /**
+     * Creating scores data
+     * @param books
+     */
+    AvgScoresClass.prototype.create = function (books) {
+        this.avgScores = {
+            length: 0
+        };
+        for (var i = 0, len = books.length; i < len; i++) {
+            // Save minimum and maximum average score of all books
+            if (this.minAvgScore == null)
+                this.minAvgScore = books[i].avgScore;
+            else if (books[i].avgScore < this.minAvgScore)
+                this.minAvgScore = books[i].avgScore;
+            if (this.maxAvgScore == null)
+                this.maxAvgScore = books[i].avgScore;
+            else if (books[i].avgScore > this.maxAvgScore)
+                this.maxAvgScore = books[i].avgScore;
+        }
+        this.partValue = (this.maxAvgScore - this.minAvgScore) / (this.scoreParts - 1);
+        for (var i = 0, len = this.scoreParts; i < len; i++) {
+            var score = this.roundScore(this.maxAvgScore - i * this.partValue);
+            this.avgScores[score] = {
+                index: i
+            };
+            this.avgScores.length++;
+        }
+    };
+    /**
+     * Return scores object
+     * @returns {*}
+     */
+    AvgScoresClass.prototype.getMainObject = function () { return this.avgScores; };
+    AvgScoresClass.prototype.getDataIndex = function (score) {
+        var scoreData = this.roundScore(score);
+        return this.avgScores[scoreData].index;
+    };
+    /**
+     * Return length of scores array
+     * @returns {number}
+     */
+    AvgScoresClass.prototype.getDataLength = function () { return this.avgScores.length; };
+    AvgScoresClass.prototype.roundScore = function (score) {
+        var times = Math.round((score - this.minAvgScore) / this.partValue);
+        var result = this.minAvgScore + times * this.partValue;
+        return result.toFixed(2);
+    };
+    return AvgScoresClass;
+})();
+var AvgScores = new AvgScoresClass();
 /// <reference path="d.ts/d3.d.ts" />
 /// <reference path="../vendor/promise.d.ts" />
 /// <reference path="interfaces.ts" />
@@ -632,6 +746,7 @@ var Years = new YearsClass();
 /// <reference path="modules/TooltipModule.ts" />
 /// <reference path="classes/PricesClass.ts" />
 /// <reference path="classes/YearsClass.ts" />
+/// <reference path="classes/AvgScoresClass.ts" />
 // http://localhost:1337/books
 promise.get('data/books.json')
     .then(function (error, data) {

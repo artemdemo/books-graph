@@ -1,19 +1,19 @@
 
 module Axes {
 
-    var $scoreAxis: HTMLDivElement;
+    var $artScoreAxis: HTMLDivElement;
+    var $avgScoreAxis: HTMLDivElement;
     var $yearAxis: HTMLDivElement;
     var $priceAxis: HTMLDivElement;
 
     var showAxisClass = 'visible';
 
-    export enum Axis { year, score, price }
-
     /**
      * Adding axis to the graph
      */
     export function addAxes() {
-        createScoreAxis();
+        createAvgScoreAxis();
+        createArtScoreAxis();
         createYearsAxis();
         createPriceAxis();
     }
@@ -22,7 +22,7 @@ module Axes {
      * Show axis - will choose axis by given parameter
      * @param axis
      */
-    export function showAxis ( axis: Axis ) {
+    export function showAxis ( axis: Controllers.contValues ) {
         var $axis: HTMLDivElement = getAxisNode( axis );
 
         if ( ! new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className) ) {
@@ -34,7 +34,7 @@ module Axes {
      * Hide axis - will choose axis by given parameter
      * @param axis
      */
-    export function hideAxis ( axis: Axis ) {
+    export function hideAxis ( axis: Controllers.contValues ) {
         var $axis: HTMLDivElement = getAxisNode( axis );
 
         if ( new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className) ) {
@@ -46,7 +46,7 @@ module Axes {
      * Toggle axis - will choose axis by given parameter
      * @param axis
      */
-    export function toggleAxis ( axis: Axis ) {
+    export function toggleAxis ( axis: Controllers.contValues ) {
         var $axis: HTMLDivElement = getAxisNode( axis );
 
         if ( new RegExp('(^| )' + showAxisClass + '( |$)', 'gi').test($axis.className) ) {
@@ -56,17 +56,20 @@ module Axes {
         }
     }
 
-    function getAxisNode( axis: Axis ): HTMLDivElement {
+    function getAxisNode( axis: Controllers.contValues ): HTMLDivElement {
         var $axis: HTMLDivElement;
 
         switch( true ) {
-            case axis == Axis.year:
+            case axis == Controllers.contValues.year:
                 $axis = $yearAxis;
                 break;
-            case axis == Axis.score:
-                $axis = $scoreAxis;
+            case axis == Controllers.contValues.avgScore:
+                $axis = $avgScoreAxis;
                 break;
-            case axis == Axis.price:
+            case axis == Controllers.contValues.artScore:
+                $axis = $artScoreAxis;
+                break;
+            case axis == Controllers.contValues.price:
                 $axis = $priceAxis;
                 break;
         }
@@ -74,26 +77,53 @@ module Axes {
         return $axis;
     }
 
-    /**
-     * Creating Score axis - Y
-     */
-    function createScoreAxis() {
-        $scoreAxis = document.createElement('div');
-        $scoreAxis.setAttribute('id', 'scoreAxis-group');
-        $scoreAxis.setAttribute('class', 'axis-group y-axis');
-        $scoreAxis.style.top = ( Paper.getPaperSize().height / 10 ) * 2 + 'px';
 
-        document.body.appendChild( $scoreAxis );
+    /**
+     * Creating Art Score axis - Y
+     */
+    function createArtScoreAxis() {
+        $artScoreAxis = document.createElement('div');
+        $artScoreAxis.setAttribute('id', 'artScoreAxis-group');
+        $artScoreAxis.setAttribute('class', 'axis-group y-axis');
+        $artScoreAxis.style.top = ( Paper.getPaperSize().height / 10 ) * 2 + 'px';
+
+        document.body.appendChild( $artScoreAxis );
 
         for ( var i=4; i>0; i-- ) {
             var $text: HTMLDivElement = document.createElement('div');
 
-            $text.setAttribute('class', 'score');
+            $text.setAttribute('class', 'node score');
             $text.appendChild( document.createTextNode( String(i) ) );
             if ( i != 4 ) $text.style.marginTop = ( Paper.getPaperSize().height / 10 ) * 2.2 + 'px';
 
-            $scoreAxis.appendChild( $text );
+            $artScoreAxis.appendChild( $text );
         }
+    }
+
+    /**
+     * Creating Average Score axis - Y
+     */
+    function createAvgScoreAxis() {
+        var avgScores = AvgScores.getMainObject();
+
+        $avgScoreAxis = document.createElement('div');
+        $avgScoreAxis.setAttribute('id', 'avgScoreAxis-group');
+        $avgScoreAxis.setAttribute('class', 'axis-group y-axis');
+        $avgScoreAxis.style.top = ( Paper.getPaperSize().height / 10 ) * 2 + 'px';
+
+        document.body.appendChild( $avgScoreAxis );
+
+        for ( var key in avgScores ) {
+            if ( avgScores.hasOwnProperty(key) && parseInt(key) == parseInt(key) ) {
+                var $text: HTMLDivElement = document.createElement('div');
+
+                $text.setAttribute('class', 'node score');
+                $text.appendChild( document.createTextNode( key ) );
+
+                $avgScoreAxis.appendChild( $text );
+            }
+        }
+
     }
 
     /**

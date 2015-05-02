@@ -50,6 +50,19 @@ body {
   bottom: 10%;
   padding-right: 13px;
   border-right: 1px solid @borderColor;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+
+  .node {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-flex: 1;
+    flex: 1;
+  }
 }
 
 .x-axis {

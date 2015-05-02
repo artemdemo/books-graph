@@ -77,6 +77,8 @@ module Book {
         }
 
         Prices.create( books );
+        Years.create( books );
+        AvgScores.create( books );
 
         return books;
     }
@@ -169,16 +171,26 @@ module Book {
      * @returns {number}
      */
     function getYcenter ( book: bookData ) {
-        var y = Paper.getPaperSize().height / 2;
+        var y;
+        var yValueIndex;
+        var yValueLength;
 
-        if ( Controllers.getCurrentContValue().y == Controllers.contValues.score ) {
-            if ( Math.floor( book.avgScore ) == 1 ) {
-                y = ( Paper.getPaperSize().height / 10 ) * 9
-            } else {
-                var id = 5 - Math.floor( book.avgScore );
-                y = ( Paper.getPaperSize().height / 10 ) * ( 2 * id + 1 )
-            }
+        if ( Controllers.getCurrentContValue().y == Controllers.contValues.avgScore ) {
+            yValueIndex = AvgScores.getDataIndex( book.avgScore );
+            yValueLength = AvgScores.getDataLength();
+        } else if ( Controllers.getCurrentContValue().y == Controllers.contValues.artScore ) {
+            //yValueIndex = ArtScores.getDataIndex( book.artScore );
+            //yValueLength = ArtScores.getDataLength();
         }
+
+        if ( yValueIndex == undefined ) {
+            y = Paper.getPaperSize().height / 2;
+        } else if ( yValueIndex == 0 ) {
+            y = Paper.getPaperSize().height / (yValueLength * 2)
+        } else {
+            y = ( Paper.getPaperSize().height / (yValueLength * 2) ) * ( 2 * yValueIndex + 1 )
+        }
+
         return y;
     }
 

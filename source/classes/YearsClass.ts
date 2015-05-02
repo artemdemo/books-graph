@@ -3,12 +3,17 @@ class YearsClass implements AxisDataInterface {
 
     years: dataObjArray;
 
+    /**
+     * Creating years data
+     * @param books
+     */
     create(books:bookData[]) {
         this.years = {
             length: 0
         };
 
         for (var i=0, len=books.length; i<len; i++) {
+            if ( ! books[i].year ) continue;
             // Save year data in special object
             if ( this.years.hasOwnProperty( String(books[i].year) ) ) {
                 this.years[books[i].year].voters++;
@@ -36,10 +41,24 @@ class YearsClass implements AxisDataInterface {
 
     }
 
+    /**
+     * Return years object
+     * @returns {*}
+     */
     getMainObject():dataObjArray { return this.years; }
 
-    getDataIndex( year:any ):number { return this.years[year]; }
+    /**
+     * Return index of given year in array of Years.
+     * Will return undefined if there is no such year
+     * @param year
+     * @returns {number|undefined}
+     */
+    getDataIndex( year:number ):number { return this.years[year].index; }
 
+    /**
+     * Return length of years array
+     * @returns {number}
+     */
     getDataLength():number { return this.years.length; }
 }
 

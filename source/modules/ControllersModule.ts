@@ -3,7 +3,7 @@ module Controllers {
     /**
      * Controller values.
      */
-    export enum contValues { all, score, year, price }
+    export enum contValues { all, avgScore, artScore, year, price }
 
     var currentContValueX: contValues = contValues.all;
     var currentContValueY: contValues = contValues.all;
@@ -35,29 +35,34 @@ module Controllers {
                         e.srcElement.attributes['data-show'].nodeValue // data - all, score, year
                     );
 
-
                     // Switching Y axes
                     switch( true ) {
-                        case currentContValueY == contValues.score:
-                            Axes.showAxis( Axes.Axis.score );
+                        case currentContValueY == contValues.avgScore:
+                            Axes.showAxis( contValues.avgScore );
+                            Axes.hideAxis( contValues.artScore );
+                            break;
+                        case currentContValueY == contValues.artScore:
+                            Axes.hideAxis( contValues.avgScore );
+                            Axes.showAxis( contValues.artScore );
                             break;
                         default:
-                            Axes.hideAxis( Axes.Axis.score );
+                            Axes.hideAxis( contValues.avgScore );
+                            Axes.hideAxis( contValues.artScore );
                     }
 
                     // Switching X axes
                     switch( true ) {
                         case currentContValueX == contValues.year:
-                            Axes.showAxis( Axes.Axis.year );
-                            Axes.hideAxis( Axes.Axis.price );
+                            Axes.showAxis( contValues.year );
+                            Axes.hideAxis( contValues.price );
                             break;
                         case currentContValueX == contValues.price:
-                            Axes.hideAxis( Axes.Axis.year );
-                            Axes.showAxis( Axes.Axis.price );
+                            Axes.hideAxis( contValues.year );
+                            Axes.showAxis( contValues.price );
                             break;
                         default:
-                            Axes.hideAxis( Axes.Axis.year );
-                            Axes.hideAxis( Axes.Axis.price );
+                            Axes.hideAxis( contValues.year );
+                            Axes.hideAxis( contValues.price );
                     }
 
                     force.start();
