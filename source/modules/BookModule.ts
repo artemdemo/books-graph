@@ -1,6 +1,6 @@
 
 module Book {
-    var maxRadius:number = 35;
+    var maxRadius:number = 55;
     var relativeMaxRadius:number = 1;
 
     var scores: dataObjArray;
@@ -118,12 +118,12 @@ module Book {
     }
 
     /**
-     * Determine density of the circle
+     * Determine density of the circles
      * @param book
      * @returns {number}
      */
     export function getCharge( book: bookData ) {
-        return book.voters * -0.9;
+        return book.voters * -0.5;
     }
 
     /**

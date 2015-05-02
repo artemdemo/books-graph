@@ -16,7 +16,7 @@ var Paper;
 })(Paper || (Paper = {}));
 var Book;
 (function (Book) {
-    var maxRadius = 35;
+    var maxRadius = 55;
     var relativeMaxRadius = 1;
     var scores;
     /**
@@ -128,12 +128,12 @@ var Book;
     }
     Book.moveTowardCenter = moveTowardCenter;
     /**
-     * Determine density of the circle
+     * Determine density of the circles
      * @param book
      * @returns {number}
      */
     function getCharge(book) {
-        return book.voters * -0.9;
+        return book.voters * -0.5;
     }
     Book.getCharge = getCharge;
     /**
