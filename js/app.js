@@ -71,13 +71,16 @@ var Book;
         };
         for (var i = 0, len = books.length; i < len; i++) {
             var voters = 0;
+            // Add average score if it's missing
             if (!books[i].hasOwnProperty('avgScore'))
                 books[i].avgScore = getAvgScore(books[i]);
+            // Calculate and add number of voters
             for (var key in books[i].score) {
                 if (books[i].score.hasOwnProperty(key))
                     voters += books[i].score[key];
             }
             books[i].voters = voters;
+            // Save year data in special object
             if (years.hasOwnProperty(String(books[i].year))) {
                 years[books[i].year].voters++;
             }
@@ -88,6 +91,8 @@ var Book;
                 };
                 years.length++;
             }
+            // Same fo price data
+            books[i].price = !books[i].price ? 0 : books[i].price; // If there is 'null' I will convert it to 0
             if (prices.hasOwnProperty(String(getRoundedPrice(books[i].price)))) {
                 prices[getRoundedPrice(books[i].price)].members++;
             }
@@ -541,7 +546,7 @@ var Tooltip;
      * Show tooltip in DOM
      */
     function showTooltip() {
-        $toolTip.getElementsByClassName('title')[0].innerHTML = currentBook.name;
+        $toolTip.getElementsByClassName('title')[0].innerHTML = currentBook.bookName;
         $toolTip.getElementsByClassName('author')[0].innerHTML = currentBook.author;
         $toolTip.getElementsByClassName('price')[0].innerHTML = currentBook.price.toFixed(2);
         $toolTip.getElementsByClassName('avgScore')[0].innerHTML = currentBook.avgScore.toFixed(2);

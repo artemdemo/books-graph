@@ -33,7 +33,7 @@ module Tooltip {
      * Show tooltip in DOM
      */
     function showTooltip() {
-        ( <HTMLBaseElement> $toolTip.getElementsByClassName('title')[0] ).innerHTML = currentBook.name;
+        ( <HTMLBaseElement> $toolTip.getElementsByClassName('title')[0] ).innerHTML = currentBook.bookName;
         ( <HTMLBaseElement> $toolTip.getElementsByClassName('author')[0] ).innerHTML = currentBook.author;
         ( <HTMLBaseElement> $toolTip.getElementsByClassName('price')[0] ).innerHTML = currentBook.price.toFixed(2);
         ( <HTMLBaseElement> $toolTip.getElementsByClassName('avgScore')[0] ).innerHTML = currentBook.avgScore.toFixed(2);
