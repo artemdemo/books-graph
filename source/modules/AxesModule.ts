@@ -1,3 +1,4 @@
+
 module Axes {
 
     var $scoreAxis: HTMLDivElement;
@@ -123,7 +124,7 @@ module Axes {
      * Creating Price axis - X
      */
     function createPriceAxis() {
-        var prices = Book.getPricesObject();
+        var prices = Prices.getMainObject();
 
         $priceAxis = document.createElement('div');
         $priceAxis.setAttribute('id', 'priceAxis-group');

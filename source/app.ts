@@ -1,10 +1,12 @@
 /// <reference path="d.ts/d3.d.ts" />
 /// <reference path="../vendor/promise.d.ts" />
+/// <reference path="interfaces.ts" />
 /// <reference path="modules/PaperModule.ts" />
 /// <reference path="modules/BookModule.ts" />
 /// <reference path="modules/ControllersModule.ts" />
 /// <reference path="modules/AxesModule.ts" />
 /// <reference path="modules/TooltipModule.ts" />
+/// <reference path="classes/PricesClass.ts" />
 
 // http://localhost:1337/books
 promise.get('data/books.json')

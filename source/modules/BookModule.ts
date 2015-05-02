@@ -1,28 +1,10 @@
-interface bookData {
-    author: string;
-    id: string;
-    bookName: string;
-    price: number;
-    score: Object;
-    avgScore?: number;
-    voters?: number;
-    year: number;
-    x?: number;
-    y?: number;
-}
-
-interface booksObject {
-    Books: bookData[];
-    description: string;
-    name: string;
-}
 
 module Book {
     var maxRadius:number = 35;
     var relativeMaxRadius:number = 1;
 
-    var years: any;
-    var prices: any;
+    var years: dataObjArray;
+    var scores: dataObjArray;
 
     /**
      * Get all books data and calculate max radius (total number of votes) based on it's data.
@@ -59,6 +41,7 @@ module Book {
      *  avgScore - average score of the book
      *  voters - number of voters
      *  also save data for each year
+     *  get min and max scores
      * @param books
      * @returns {bookData[]}
      */
@@ -67,15 +50,25 @@ module Book {
             length: 0
         };
 
-        prices = {
-            length: 0
-        };
+        // Min and max scores will help to separate nodes by score.
+        // I need it, case I can't assume that it will be from 1 to 5 [sad face]
+        var minScore:number = null;
+        var maxScore:number = null;
 
         for (var i=0, len=books.length; i<len; i++) {
             var voters = 0;
 
             // Add average score if it's missing
             if ( ! books[i].hasOwnProperty('avgScore') ) books[i].avgScore = getAvgScore( books[i] );
+
+            // If there is 'null' I will convert it to 0
+            books[i].price = ! books[i].price ? 0 : books[i].price;
+
+            // Save minimum and maximum score of all books
+            if ( minScore == null ) minScore = books[i].avgScore;
+            else if ( books[i].avgScore < minScore ) minScore = books[i].avgScore;
+            if ( maxScore == null ) maxScore = books[i].avgScore;
+            else if ( books[i].avgScore > maxScore ) maxScore = books[i].avgScore;
 
             // Calculate and add number of voters
             for ( var key in books[i].score ) {
@@ -93,18 +86,13 @@ module Book {
                 };
                 years.length++;
             }
-            // Same fo price data
-            books[i].price = ! books[i].price ? 0 : books[i].price; // If there is 'null' I will convert it to 0
-            if ( prices.hasOwnProperty( String( getRoundedPrice(books[i].price) ) ) ) {
-                prices[getRoundedPrice(books[i].price)].members++;
-            } else {
-                prices[getRoundedPrice(books[i].price)] = {
-                    members: 1, // how many books are in this price segment
-                    index: 0
-                };
-                prices.length++;
-            }
+
+            // Same for score data
+            //console.log( books[i].avgScore );
         }
+
+        Prices.create( books );
+
         // Now I need to add index to each year.
         // It will solve problem related to the fact that I have no idea how many years there is and what is index each of them
         // Index I need to determine position of each year
@@ -117,16 +105,7 @@ module Book {
                 }
             }
         }
-        // Same thing for the price list
-        var priceIndex = 0;
-        for ( var key in prices ) {
-            if (prices.hasOwnProperty(key)) {
-                if ( prices[key].hasOwnProperty('index') ) {
-                    prices[key].index = priceIndex;
-                    priceIndex++;
-                }
-            }
-        }
+
         return books;
     }
 
@@ -198,12 +177,6 @@ module Book {
     export function getYearsObject() { return years; }
 
     /**
-     * Return prices object
-     * @returns {*}
-     */
-    export function getPricesObject() { return prices; }
-
-    /**
      * Calculate avg score of given book
      * @param book
      * @returns {number}
@@ -223,23 +196,6 @@ module Book {
         return score;
     }
 
-    /**
-     * Round whole number
-     * 25.6 -> 30
-     * 124.3 -> 120
-     * @param price
-     * @returns {number}
-     */
-    function getRoundedPrice( price: number ):number {
-        var priceStr:string = String( Math.round( price ) );
-        var lastNum:number = parseInt( priceStr.slice(-1) );
-        var result: number;
-
-        if ( lastNum > 4 ) result = parseInt( priceStr ) + ( 10 - lastNum );
-            else result = parseInt( priceStr ) - lastNum;
-
-        return result;
-    }
 
     /**
      * Calculate Y of the center
@@ -267,23 +223,23 @@ module Book {
      */
     function getXcenter ( book: bookData ) {
         var x;
-        var xValueArr;
-        var xValueData;
+        var xValueLength;
+        var xValueIndex;
 
         if ( Controllers.getCurrentContValue().x == Controllers.contValues.year ) {
-            xValueData = years[ book.year ];
-            xValueArr = years;
+            //xValueIndex = years[ book.year ];
+            //xValueArr = years;
         } else if ( Controllers.getCurrentContValue().x == Controllers.contValues.price ) {
-            xValueData = prices[ getRoundedPrice(book.price) ];
-            xValueArr = prices;
+            xValueIndex = Prices.getDataIndex( book.price );
+            xValueLength = Prices.getDataLength();
         }
 
-        if ( xValueData == undefined ) {
+        if ( xValueIndex == undefined ) {
             x = Paper.getPaperSize().width / 2;
-        } else if ( xValueData.index == 0 ) {
-            x = Paper.getPaperSize().width / (xValueArr.length * 2)
+        } else if ( xValueIndex == 0 ) {
+            x = Paper.getPaperSize().width / (xValueLength * 2)
         } else {
-            x = ( Paper.getPaperSize().width / (xValueArr.length * 2) ) * ( 2 * xValueData.index + 1 )
+            x = ( Paper.getPaperSize().width / (xValueLength * 2) ) * ( 2 * xValueIndex + 1 )
         }
 
         return x;

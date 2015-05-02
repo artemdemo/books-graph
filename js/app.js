@@ -19,7 +19,7 @@ var Book;
     var maxRadius = 35;
     var relativeMaxRadius = 1;
     var years;
-    var prices;
+    var scores;
     /**
      * Get all books data and calculate max radius (total number of votes) based on it's data.
      * @param books
@@ -59,6 +59,7 @@ var Book;
      *  avgScore - average score of the book
      *  voters - number of voters
      *  also save data for each year
+     *  get min and max scores
      * @param books
      * @returns {bookData[]}
      */
@@ -66,14 +67,26 @@ var Book;
         years = {
             length: 0
         };
-        prices = {
-            length: 0
-        };
+        // Min and max scores will help to separate nodes by score.
+        // I need it, case I can't assume that it will be from 1 to 5 [sad face]
+        var minScore = null;
+        var maxScore = null;
         for (var i = 0, len = books.length; i < len; i++) {
             var voters = 0;
             // Add average score if it's missing
             if (!books[i].hasOwnProperty('avgScore'))
                 books[i].avgScore = getAvgScore(books[i]);
+            // If there is 'null' I will convert it to 0
+            books[i].price = !books[i].price ? 0 : books[i].price;
+            // Save minimum and maximum score of all books
+            if (minScore == null)
+                minScore = books[i].avgScore;
+            else if (books[i].avgScore < minScore)
+                minScore = books[i].avgScore;
+            if (maxScore == null)
+                maxScore = books[i].avgScore;
+            else if (books[i].avgScore > maxScore)
+                maxScore = books[i].avgScore;
             // Calculate and add number of voters
             for (var key in books[i].score) {
                 if (books[i].score.hasOwnProperty(key))
@@ -91,19 +104,8 @@ var Book;
                 };
                 years.length++;
             }
-            // Same fo price data
-            books[i].price = !books[i].price ? 0 : books[i].price; // If there is 'null' I will convert it to 0
-            if (prices.hasOwnProperty(String(getRoundedPrice(books[i].price)))) {
-                prices[getRoundedPrice(books[i].price)].members++;
-            }
-            else {
-                prices[getRoundedPrice(books[i].price)] = {
-                    members: 1,
-                    index: 0
-                };
-                prices.length++;
-            }
         }
+        Prices.create(books);
         // Now I need to add index to each year.
         // It will solve problem related to the fact that I have no idea how many years there is and what is index each of them
         // Index I need to determine position of each year
@@ -113,16 +115,6 @@ var Book;
                 if (years[key].hasOwnProperty('index')) {
                     years[key].index = yearsIndex;
                     yearsIndex++;
-                }
-            }
-        }
-        // Same thing for the price list
-        var priceIndex = 0;
-        for (var key in prices) {
-            if (prices.hasOwnProperty(key)) {
-                if (prices[key].hasOwnProperty('index')) {
-                    prices[key].index = priceIndex;
-                    priceIndex++;
                 }
             }
         }
@@ -192,12 +184,6 @@ var Book;
     function getYearsObject() { return years; }
     Book.getYearsObject = getYearsObject;
     /**
-     * Return prices object
-     * @returns {*}
-     */
-    function getPricesObject() { return prices; }
-    Book.getPricesObject = getPricesObject;
-    /**
      * Calculate avg score of given book
      * @param book
      * @returns {number}
@@ -214,23 +200,6 @@ var Book;
         if (voters > 0)
             score = score / voters;
         return score;
-    }
-    /**
-     * Round whole number
-     * 25.6 -> 30
-     * 124.3 -> 120
-     * @param price
-     * @returns {number}
-     */
-    function getRoundedPrice(price) {
-        var priceStr = String(Math.round(price));
-        var lastNum = parseInt(priceStr.slice(-1));
-        var result;
-        if (lastNum > 4)
-            result = parseInt(priceStr) + (10 - lastNum);
-        else
-            result = parseInt(priceStr) - lastNum;
-        return result;
     }
     /**
      * Calculate Y of the center
@@ -257,24 +226,22 @@ var Book;
      */
     function getXcenter(book) {
         var x;
-        var xValueArr;
-        var xValueData;
+        var xValueLength;
+        var xValueIndex;
         if (Controllers.getCurrentContValue().x == Controllers.contValues.year) {
-            xValueData = years[book.year];
-            xValueArr = years;
         }
         else if (Controllers.getCurrentContValue().x == Controllers.contValues.price) {
-            xValueData = prices[getRoundedPrice(book.price)];
-            xValueArr = prices;
+            xValueIndex = Prices.getDataIndex(book.price);
+            xValueLength = Prices.getDataLength();
         }
-        if (xValueData == undefined) {
+        if (xValueIndex == undefined) {
             x = Paper.getPaperSize().width / 2;
         }
-        else if (xValueData.index == 0) {
-            x = Paper.getPaperSize().width / (xValueArr.length * 2);
+        else if (xValueIndex == 0) {
+            x = Paper.getPaperSize().width / (xValueLength * 2);
         }
         else {
-            x = (Paper.getPaperSize().width / (xValueArr.length * 2)) * (2 * xValueData.index + 1);
+            x = (Paper.getPaperSize().width / (xValueLength * 2)) * (2 * xValueIndex + 1);
         }
         return x;
     }
@@ -502,7 +469,7 @@ var Axes;
      * Creating Price axis - X
      */
     function createPriceAxis() {
-        var prices = Book.getPricesObject();
+        var prices = Prices.getMainObject();
         $priceAxis = document.createElement('div');
         $priceAxis.setAttribute('id', 'priceAxis-group');
         $priceAxis.setAttribute('class', 'axis-group x-axis');
@@ -569,13 +536,93 @@ var Tooltip;
         $toolTip.style.top = String(e.pageY + 3) + 'px';
     }
 })(Tooltip || (Tooltip = {}));
+var PricesClass = (function () {
+    function PricesClass() {
+    }
+    /**
+     * Creating prices data
+     * @param books
+     */
+    PricesClass.prototype.create = function (books) {
+        this.prices = {
+            length: 0
+        };
+        for (var i = 0, len = books.length; i < len; i++) {
+            if (this.prices.hasOwnProperty(String(PricesClass.getRoundedPrice(books[i].price)))) {
+                this.prices[PricesClass.getRoundedPrice(books[i].price)].members++;
+            }
+            else {
+                this.prices[PricesClass.getRoundedPrice(books[i].price)] = {
+                    members: 1,
+                    index: 0
+                };
+                this.prices.length++;
+            }
+        }
+        // Now I need to add index to each price.
+        // It will solve problem related to the fact that I have no idea how many prices there is and what is index each of them
+        // Index I need to determine position of each price on axis
+        var priceIndex = 0;
+        for (var key in this.prices) {
+            if (this.prices.hasOwnProperty(key)) {
+                if (this.prices[key].hasOwnProperty('index')) {
+                    this.prices[key].index = priceIndex;
+                    priceIndex++;
+                }
+            }
+        }
+    };
+    /**
+     * Return prices object
+     * @returns {*}
+     */
+    PricesClass.prototype.getMainObject = function () { return this.prices; };
+    /**
+     * Return index of given price in array of Prices.
+     * Will return undefined if there is no such price
+     * @param bookPrice
+     * @returns {number|undefined}
+     */
+    PricesClass.prototype.getDataIndex = function (bookPrice) {
+        var priceData = this.prices[PricesClass.getRoundedPrice(bookPrice)];
+        return !!priceData ? priceData.index : undefined;
+    };
+    /**
+     * Return length of prices array
+     * @returns {number}
+     */
+    PricesClass.prototype.getDataLength = function () { return this.prices.length; };
+    /**
+     * Round whole number
+     * 25.6 -> 30
+     * 124.3 -> 120
+     * @param price
+     * @private
+     * @static
+     * @returns {number}
+     */
+    PricesClass.getRoundedPrice = function (price) {
+        var priceStr = String(Math.round(price));
+        var lastNum = parseInt(priceStr.slice(-1));
+        var result;
+        if (lastNum > 4)
+            result = parseInt(priceStr) + (10 - lastNum);
+        else
+            result = parseInt(priceStr) - lastNum;
+        return result;
+    };
+    return PricesClass;
+})();
+var Prices = new PricesClass();
 /// <reference path="d.ts/d3.d.ts" />
 /// <reference path="../vendor/promise.d.ts" />
+/// <reference path="interfaces.ts" />
 /// <reference path="modules/PaperModule.ts" />
 /// <reference path="modules/BookModule.ts" />
 /// <reference path="modules/ControllersModule.ts" />
 /// <reference path="modules/AxesModule.ts" />
 /// <reference path="modules/TooltipModule.ts" />
+/// <reference path="classes/PricesClass.ts" />
 // http://localhost:1337/books
 promise.get('data/books.json')
     .then(function (error, data) {
