@@ -97,21 +97,6 @@ var Book;
     }
     Book.addSpecialData = addSpecialData;
     /**
-     * Generate class for each circle in graph
-     * @param book
-     * @returns {string}
-     */
-    function getCircleClass(book) {
-        var avgScore = book.hasOwnProperty('avgScore') ? book.avgScore : getAvgScore(book);
-        var avgScore_floor = Math.floor(avgScore);
-        var avgScore_group = Math.floor((avgScore - avgScore_floor) * 10);
-        var className;
-        className = 'book-node score-' + String(avgScore_floor);
-        className += ' group-' + String(avgScore_group);
-        return className;
-    }
-    Book.getCircleClass = getCircleClass;
-    /**
      * Organise all dots in one center
      * @param alpha
      * @returns {*}
@@ -171,6 +156,17 @@ var Book;
         return score;
     }
     /**
+     * Set class for given circle in graph (by it's ID)
+     * @param circleID {string}
+     * @param className {string}
+     * @returns {string}
+     */
+    function setCircleClass(circleID, className) {
+        var $circle = document.getElementById(circleID);
+        $circle.setAttribute('class', 'book-node ' + className);
+        return true;
+    }
+    /**
      * Calculate Y of the center
      * @param book
      * @returns {number}
@@ -185,6 +181,9 @@ var Book;
         }
         else if (Controllers.getCurrentContValue().y == Controllers.contValues.artScore) {
         }
+        // Add "score" class to the node, based on it's index
+        var scoreIndex = 4 - AvgScores.getDataIndex(book.avgScore);
+        setCircleClass(book.id, 'score-' + scoreIndex);
         if (yValueIndex == undefined) {
             y = Paper.getPaperSize().height / 2;
         }
@@ -440,7 +439,6 @@ var Axes;
         $avgScoreAxis = document.createElement('div');
         $avgScoreAxis.setAttribute('id', 'avgScoreAxis-group');
         $avgScoreAxis.setAttribute('class', 'axis-group y-axis');
-        $avgScoreAxis.style.top = (Paper.getPaperSize().height / 10) * 2 + 'px';
         document.body.appendChild($avgScoreAxis);
         for (var key in avgScores) {
             if (avgScores.hasOwnProperty(key) && parseInt(key) == parseInt(key)) {
@@ -772,7 +770,6 @@ promise.get('data/books.json')
     node = svg.selectAll(".node")
         .data(graphBooks)
         .enter().append("circle")
-        .attr("class", function (d) { return Book.getCircleClass(d); })
         .attr("r", function (d) { return Book.getBookRadius(d); })
         .attr("id", function (d) { return d.id; })
         .call(force.drag)

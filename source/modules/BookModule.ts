@@ -84,23 +84,6 @@ module Book {
     }
 
     /**
-     * Generate class for each circle in graph
-     * @param book
-     * @returns {string}
-     */
-    export function getCircleClass ( book: bookData ) {
-        var avgScore:number = book.hasOwnProperty('avgScore') ? book.avgScore : getAvgScore(book);
-        var avgScore_floor = Math.floor( avgScore );
-        var avgScore_group = Math.floor( (avgScore - avgScore_floor) * 10 );
-        var className:string;
-
-        className = 'book-node score-' + String( avgScore_floor );
-        className += ' group-' + String( avgScore_group );
-
-        return className
-    }
-
-    /**
      * Organise all dots in one center
      * @param alpha
      * @returns {*}
@@ -164,6 +147,19 @@ module Book {
         return score;
     }
 
+    /**
+     * Set class for given circle in graph (by it's ID)
+     * @param circleID {string}
+     * @param className {string}
+     * @returns {string}
+     */
+    function setCircleClass ( circleID: string, className: string ) {
+        var $circle = document.getElementById( circleID );
+
+        $circle.setAttribute( 'class', 'book-node ' + className );
+
+        return true;
+    }
 
     /**
      * Calculate Y of the center
@@ -182,6 +178,10 @@ module Book {
             //yValueIndex = ArtScores.getDataIndex( book.artScore );
             //yValueLength = ArtScores.getDataLength();
         }
+
+        // Add "score" class to the node, based on it's index
+        var scoreIndex = 4 - AvgScores.getDataIndex( book.avgScore );
+        setCircleClass( book.id, 'score-' + scoreIndex );
 
         if ( yValueIndex == undefined ) {
             y = Paper.getPaperSize().height / 2;

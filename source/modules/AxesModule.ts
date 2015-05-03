@@ -109,7 +109,6 @@ module Axes {
         $avgScoreAxis = document.createElement('div');
         $avgScoreAxis.setAttribute('id', 'avgScoreAxis-group');
         $avgScoreAxis.setAttribute('class', 'axis-group y-axis');
-        $avgScoreAxis.style.top = ( Paper.getPaperSize().height / 10 ) * 2 + 'px';
 
         document.body.appendChild( $avgScoreAxis );
 

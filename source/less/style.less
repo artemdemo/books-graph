@@ -45,9 +45,9 @@ body {
 }
 
 .y-axis {
-  top: 20%;
+  top: 7%;
   left: 3%;
-  bottom: 10%;
+  bottom: 5%;
   padding-right: 13px;
   border-right: 1px solid @borderColor;
   display: -webkit-flex;
@@ -96,13 +96,33 @@ circle.book-node:hover {
 
 /*---------- Colors generation ---------------*/
 
-@score1: #a8ff0d;
-@score2: #fff710;
+@score1: #fdff76;
+@score2: #ffd333;
 @score3: #ff6410;
 @score4: #ff0800;
 
 @color_step: 1.5;
 
+circle.score-1 {
+  fill: @score1;
+  stroke: darken( @score1, 20% );
+}
+circle.score-2 {
+  fill: @score2;
+  stroke: darken( @score2, 15% );
+}
+circle.score-3 {
+  fill: @score3;
+  stroke: darken( @score3, 10% );
+}
+circle.score-4 {
+  fill: @score4;
+  stroke: darken( @score4, 10% );
+}
+
+
+
+/*
 .generate-score1(@n, @i: 0) when (@i =< @n) {
   .score-1.group-@{i} {
     @fill: darken( @score1, @i * 1);
@@ -147,3 +167,4 @@ circle.book-node:hover {
 .generate-score2(9);
 .generate-score3(9);
 .generate-score4(9);
+*/

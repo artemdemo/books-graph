@@ -38,9 +38,9 @@ body {
   opacity: 1;
 }
 .y-axis {
-  top: 20%;
+  top: 7%;
   left: 3%;
-  bottom: 10%;
+  bottom: 5%;
   padding-right: 13px;
   border-right: 1px solid #ababab;
   display: -webkit-flex;
@@ -81,163 +81,65 @@ circle.book-node:hover {
   stroke-width: 3;
 }
 /*---------- Colors generation ---------------*/
-.score-1.group-0 {
-  fill: #a8ff0d;
-  stroke: #8bd900;
+circle.score-1 {
+  fill: #fdff76;
+  stroke: #fcff10;
 }
-.score-1.group-1 {
-  fill: #a6ff08;
-  stroke: #88d400;
+circle.score-2 {
+  fill: #ffd333;
+  stroke: #e5b400;
 }
-.score-1.group-2 {
-  fill: #a4ff03;
-  stroke: #84cf00;
-}
-.score-1.group-3 {
-  fill: #a2fd00;
-  stroke: #81ca00;
-}
-.score-1.group-4 {
-  fill: #9ff800;
-  stroke: #7ec500;
-}
-.score-1.group-5 {
-  fill: #9bf300;
-  stroke: #7bc000;
-}
-.score-1.group-6 {
-  fill: #98ed00;
-  stroke: #77ba00;
-}
-.score-1.group-7 {
-  fill: #95e800;
-  stroke: #74b500;
-}
-.score-1.group-8 {
-  fill: #92e300;
-  stroke: #71b000;
-}
-.score-1.group-9 {
-  fill: #8ede00;
-  stroke: #6eab00;
-}
-.score-2.group-0 {
-  fill: #fff710;
-  stroke: #dcd500;
-}
-.score-2.group-1 {
-  fill: #fff708;
-  stroke: #d4cd00;
-}
-.score-2.group-2 {
-  fill: #fff601;
-  stroke: #cdc600;
-}
-.score-2.group-3 {
-  fill: #f8f000;
-  stroke: #c5be00;
-}
-.score-2.group-4 {
-  fill: #f0e800;
-  stroke: #bdb700;
-}
-.score-2.group-5 {
-  fill: #e9e100;
-  stroke: #b6b000;
-}
-.score-2.group-6 {
-  fill: #e1da00;
-  stroke: #aea800;
-}
-.score-2.group-7 {
-  fill: #d9d200;
-  stroke: #a6a100;
-}
-.score-2.group-8 {
-  fill: #d2cb00;
-  stroke: #9f9900;
-}
-.score-2.group-9 {
-  fill: #cac300;
-  stroke: #979200;
-}
-.score-3.group-0 {
+circle.score-3 {
   fill: #ff6410;
   stroke: #dc4d00;
 }
-.score-3.group-1 {
-  fill: #ff5f08;
-  stroke: #d44b00;
-}
-.score-3.group-2 {
-  fill: #ff5a01;
-  stroke: #cd4800;
-}
-.score-3.group-3 {
-  fill: #f85700;
-  stroke: #c54500;
-}
-.score-3.group-4 {
-  fill: #f05400;
-  stroke: #bd4300;
-}
-.score-3.group-5 {
-  fill: #e95200;
-  stroke: #b64000;
-}
-.score-3.group-6 {
-  fill: #e14f00;
-  stroke: #ae3d00;
-}
-.score-3.group-7 {
-  fill: #d94c00;
-  stroke: #a63b00;
-}
-.score-3.group-8 {
-  fill: #d24a00;
-  stroke: #9f3800;
-}
-.score-3.group-9 {
-  fill: #ca4700;
-  stroke: #973500;
-}
-.score-4.group-0 {
+circle.score-4 {
   fill: #ff0800;
   stroke: #cc0600;
 }
-.score-4.group-1 {
-  fill: #f70800;
-  stroke: #c40600;
+/*
+.generate-score1(@n, @i: 0) when (@i =< @n) {
+  .score-1.group-@{i} {
+    @fill: darken( @score1, @i * 1);
+
+    fill: @fill;
+    stroke: darken( @fill, 10% );
+  }
+  .generate-score1(@n, (@i + 1));
 }
-.score-4.group-2 {
-  fill: #f00800;
-  stroke: #bd0600;
+
+.generate-score2(@n, @i: 0) when (@i =< @n) {
+  .score-2.group-@{i} {
+    @fill: darken( @score2, @i * @color_step);
+
+    fill: @fill;
+    stroke: darken( @fill, 10% );
+  }
+  .generate-score2(@n, (@i + 1));
 }
-.score-4.group-3 {
-  fill: #e80700;
-  stroke: #b50600;
+
+.generate-score3(@n, @i: 0) when (@i =< @n) {
+  .score-3.group-@{i} {
+    @fill: darken( @score3, @i * @color_step);
+
+    fill: @fill;
+    stroke: darken( @fill, 10% );
+  }
+  .generate-score3(@n, (@i + 1));
 }
-.score-4.group-4 {
-  fill: #e00700;
-  stroke: #ad0500;
+
+.generate-score4(@n, @i: 0) when (@i =< @n) {
+  .score-4.group-@{i} {
+    @fill: darken( @score4, @i * @color_step);
+
+    fill: @fill;
+    stroke: darken( @fill, 10% );
+  }
+  .generate-score4(@n, (@i + 1));
 }
-.score-4.group-5 {
-  fill: #d90700;
-  stroke: #a60500;
-}
-.score-4.group-6 {
-  fill: #d10700;
-  stroke: #9e0500;
-}
-.score-4.group-7 {
-  fill: #c90600;
-  stroke: #960500;
-}
-.score-4.group-8 {
-  fill: #c20600;
-  stroke: #8f0400;
-}
-.score-4.group-9 {
-  fill: #ba0600;
-  stroke: #870400;
-}
+
+.generate-score1(9);
+.generate-score2(9);
+.generate-score3(9);
+.generate-score4(9);
+*/
