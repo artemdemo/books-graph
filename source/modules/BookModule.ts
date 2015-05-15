@@ -46,10 +46,8 @@ module Book {
      */
     export function addSpecialData( books: bookData[] ) {
 
-        // Min and max scores will help to separate nodes by score.
-        // I need it, case I can't assume that it will be from 1 to 5 [sad face]
-        var minScore:number = null;
-        var maxScore:number = null;
+        var avgScores:number[] = [];
+        var artScores:number[] = [];
 
         for (var i=0, len=books.length; i<len; i++) {
             var voters = 0;
@@ -60,25 +58,20 @@ module Book {
             // If there is 'null' I will convert it to 0
             books[i].price = ! books[i].price ? 0 : books[i].price;
 
-            // Save minimum and maximum score of all books
-            if ( minScore == null ) minScore = books[i].avgScore;
-            else if ( books[i].avgScore < minScore ) minScore = books[i].avgScore;
-            if ( maxScore == null ) maxScore = books[i].avgScore;
-            else if ( books[i].avgScore > maxScore ) maxScore = books[i].avgScore;
-
             // Calculate and add number of voters
             for ( var key in books[i].score ) {
                 if ( books[i].score.hasOwnProperty(key) ) voters += books[i].score[key]
             }
             books[i].voters = voters;
 
-            // Same for score data
-            //console.log( books[i].avgScore );
+            avgScores.push( books[i].avgScore );
+            artScores.push( books[i].artScore );
         }
 
         Prices.create( books );
         Years.create( books );
-        AvgScores.create( books );
+        AvgScores.create( avgScores );
+        ArtScores.create( artScores );
 
         return books;
     }
@@ -175,8 +168,8 @@ module Book {
             yValueIndex = AvgScores.getDataIndex( book.avgScore );
             yValueLength = AvgScores.getDataLength();
         } else if ( Controllers.getCurrentContValue().y == Controllers.contValues.artScore ) {
-            //yValueIndex = ArtScores.getDataIndex( book.artScore );
-            //yValueLength = ArtScores.getDataLength();
+            yValueIndex = ArtScores.getDataIndex( book.artScore );
+            yValueLength = ArtScores.getDataLength();
         }
 
         // Add "score" class to the node, based on it's index

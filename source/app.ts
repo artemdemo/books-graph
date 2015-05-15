@@ -8,7 +8,7 @@
 /// <reference path="modules/TooltipModule.ts" />
 /// <reference path="classes/PricesClass.ts" />
 /// <reference path="classes/YearsClass.ts" />
-/// <reference path="classes/AvgScoresClass.ts" />
+/// <reference path="classes/ScoresClass.ts" />
 
 // http://localhost:1337/books
 promise.get('data/books.json')

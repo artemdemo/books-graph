@@ -82,21 +82,23 @@ module Axes {
      * Creating Art Score axis - Y
      */
     function createArtScoreAxis() {
+        var artScores = ArtScores.getMainObject();
+
         $artScoreAxis = document.createElement('div');
         $artScoreAxis.setAttribute('id', 'artScoreAxis-group');
         $artScoreAxis.setAttribute('class', 'axis-group y-axis');
-        $artScoreAxis.style.top = ( Paper.getPaperSize().height / 10 ) * 2 + 'px';
 
         document.body.appendChild( $artScoreAxis );
 
-        for ( var i=4; i>0; i-- ) {
-            var $text: HTMLDivElement = document.createElement('div');
+        for ( var key in artScores ) {
+            if ( artScores.hasOwnProperty(key) && parseInt(key) == parseInt(key) ) {
+                var $text: HTMLDivElement = document.createElement('div');
 
-            $text.setAttribute('class', 'node score');
-            $text.appendChild( document.createTextNode( String(i) ) );
-            if ( i != 4 ) $text.style.marginTop = ( Paper.getPaperSize().height / 10 ) * 2.2 + 'px';
+                $text.setAttribute('class', 'node score');
+                $text.appendChild( document.createTextNode( key ) );
 
-            $artScoreAxis.appendChild( $text );
+                $artScoreAxis.appendChild( $text );
+            }
         }
     }
 
@@ -122,7 +124,6 @@ module Axes {
                 $avgScoreAxis.appendChild( $text );
             }
         }
-
     }
 
     /**

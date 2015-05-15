@@ -18,9 +18,9 @@ module Controllers {
         document.getElementById('controllers')
             .addEventListener('click', function(e){
                 if ( e.srcElement.attributes.hasOwnProperty('data-show') ) {
-                    var $btn = ( <HTMLBaseElement> e.srcElement );
+                    var $btn = ( <HTMLButtonElement> e.srcElement );
 
-                    removeActiveClassInGroup( $btn.parentElement.children );
+                    removeActiveClassInGroup( $btn );
 
                     // Check that source element has no active class and if no add one
                     if ( ! new RegExp('(^| )' + activeClass + '( |$)', 'gi').test($btn.className) )
@@ -107,10 +107,16 @@ module Controllers {
      * Remove activeClass from all buttons in given list.
      * If list contain less then 2 elements - do nothing and return false.
      * Otherwise button will always be pressed
-     * @param nodeList
+     * @param $btn
      * @returns {boolean}
      */
-    function removeActiveClassInGroup( nodeList: NodeList ) {
+    function removeActiveClassInGroup( $btn: HTMLButtonElement ) {
+        var nodeList = $btn.parentElement.children;
+
+        // If target button has active class - do nothing
+        // I assume that next function will handle it
+        if ( new RegExp('(^| )' + activeClass + '( |$)', 'gi').test($btn.className) ) return false;
+
         if ( nodeList.length < 2 ) return false;
 
         for ( var i=0, len=nodeList.length; i<len; i++ ) {

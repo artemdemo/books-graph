@@ -4,7 +4,8 @@ interface bookData {
     bookName: string;
     price: number;
     score: Object;
-    avgScore?: number;
+    avgScore: number;
+    artScore: number;
     voters?: number;
     year: number;
     x?: number;
@@ -20,7 +21,7 @@ interface dataObjArray {
  * AxisDataInterface define interface for main classes that define data objects: prices, years, scores end etc.
  */
 interface AxisDataInterface {
-    create( books: bookData[] );
+    create( books: any[] );
     getMainObject(): dataObjArray;
     getDataIndex( param: any ): number;
     getDataLength(): number;

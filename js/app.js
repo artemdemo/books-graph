@@ -63,10 +63,8 @@ var Book;
      * @returns {bookData[]}
      */
     function addSpecialData(books) {
-        // Min and max scores will help to separate nodes by score.
-        // I need it, case I can't assume that it will be from 1 to 5 [sad face]
-        var minScore = null;
-        var maxScore = null;
+        var avgScores = [];
+        var artScores = [];
         for (var i = 0, len = books.length; i < len; i++) {
             var voters = 0;
             // Add average score if it's missing
@@ -74,25 +72,19 @@ var Book;
                 books[i].avgScore = getAvgScore(books[i]);
             // If there is 'null' I will convert it to 0
             books[i].price = !books[i].price ? 0 : books[i].price;
-            // Save minimum and maximum score of all books
-            if (minScore == null)
-                minScore = books[i].avgScore;
-            else if (books[i].avgScore < minScore)
-                minScore = books[i].avgScore;
-            if (maxScore == null)
-                maxScore = books[i].avgScore;
-            else if (books[i].avgScore > maxScore)
-                maxScore = books[i].avgScore;
             // Calculate and add number of voters
             for (var key in books[i].score) {
                 if (books[i].score.hasOwnProperty(key))
                     voters += books[i].score[key];
             }
             books[i].voters = voters;
+            avgScores.push(books[i].avgScore);
+            artScores.push(books[i].artScore);
         }
         Prices.create(books);
         Years.create(books);
-        AvgScores.create(books);
+        AvgScores.create(avgScores);
+        ArtScores.create(artScores);
         return books;
     }
     Book.addSpecialData = addSpecialData;
@@ -180,6 +172,8 @@ var Book;
             yValueLength = AvgScores.getDataLength();
         }
         else if (Controllers.getCurrentContValue().y == Controllers.contValues.artScore) {
+            yValueIndex = ArtScores.getDataIndex(book.artScore);
+            yValueLength = ArtScores.getDataLength();
         }
         // Add "score" class to the node, based on it's index
         var scoreIndex = 4 - AvgScores.getDataIndex(book.avgScore);
@@ -249,7 +243,7 @@ var Controllers;
             .addEventListener('click', function (e) {
             if (e.srcElement.attributes.hasOwnProperty('data-show')) {
                 var $btn = e.srcElement;
-                removeActiveClassInGroup($btn.parentElement.children);
+                removeActiveClassInGroup($btn);
                 // Check that source element has no active class and if no add one
                 if (!new RegExp('(^| )' + activeClass + '( |$)', 'gi').test($btn.className))
                     $btn.className += ' ' + activeClass;
@@ -329,10 +323,15 @@ var Controllers;
      * Remove activeClass from all buttons in given list.
      * If list contain less then 2 elements - do nothing and return false.
      * Otherwise button will always be pressed
-     * @param nodeList
+     * @param $btn
      * @returns {boolean}
      */
-    function removeActiveClassInGroup(nodeList) {
+    function removeActiveClassInGroup($btn) {
+        var nodeList = $btn.parentElement.children;
+        // If target button has active class - do nothing
+        // I assume that next function will handle it
+        if (new RegExp('(^| )' + activeClass + '( |$)', 'gi').test($btn.className))
+            return false;
         if (nodeList.length < 2)
             return false;
         for (var i = 0, len = nodeList.length; i < len; i++) {
@@ -417,18 +416,18 @@ var Axes;
      * Creating Art Score axis - Y
      */
     function createArtScoreAxis() {
+        var artScores = ArtScores.getMainObject();
         $artScoreAxis = document.createElement('div');
         $artScoreAxis.setAttribute('id', 'artScoreAxis-group');
         $artScoreAxis.setAttribute('class', 'axis-group y-axis');
-        $artScoreAxis.style.top = (Paper.getPaperSize().height / 10) * 2 + 'px';
         document.body.appendChild($artScoreAxis);
-        for (var i = 4; i > 0; i--) {
-            var $text = document.createElement('div');
-            $text.setAttribute('class', 'node score');
-            $text.appendChild(document.createTextNode(String(i)));
-            if (i != 4)
-                $text.style.marginTop = (Paper.getPaperSize().height / 10) * 2.2 + 'px';
-            $artScoreAxis.appendChild($text);
+        for (var key in artScores) {
+            if (artScores.hasOwnProperty(key) && parseInt(key) == parseInt(key)) {
+                var $text = document.createElement('div');
+                $text.setAttribute('class', 'node score');
+                $text.appendChild(document.createTextNode(key));
+                $artScoreAxis.appendChild($text);
+            }
         }
     }
     /**
@@ -675,65 +674,66 @@ var YearsClass = (function () {
     return YearsClass;
 })();
 var Years = new YearsClass();
-var AvgScoresClass = (function () {
-    function AvgScoresClass() {
+var ScoresClass = (function () {
+    function ScoresClass() {
         this.scoreParts = 4;
         // Min and max scores will help to separate nodes by score.
         // I need it, case I can't assume that it will be from 1 to 5 [sad face]
-        this.minAvgScore = null;
-        this.maxAvgScore = null;
+        this.minScore = null;
+        this.maxScore = null;
         this.partValue = null;
     }
     /**
      * Creating scores data
-     * @param books
+     * @param scores
      */
-    AvgScoresClass.prototype.create = function (books) {
-        this.avgScores = {
+    ScoresClass.prototype.create = function (scores) {
+        this.ScoresObj = {
             length: 0
         };
-        for (var i = 0, len = books.length; i < len; i++) {
-            // Save minimum and maximum average score of all books
-            if (this.minAvgScore == null)
-                this.minAvgScore = books[i].avgScore;
-            else if (books[i].avgScore < this.minAvgScore)
-                this.minAvgScore = books[i].avgScore;
-            if (this.maxAvgScore == null)
-                this.maxAvgScore = books[i].avgScore;
-            else if (books[i].avgScore > this.maxAvgScore)
-                this.maxAvgScore = books[i].avgScore;
+        for (var i = 0, len = scores.length; i < len; i++) {
+            // Save minimum and maximum average score of all scores
+            if (this.minScore == null)
+                this.minScore = scores[i];
+            else if (scores[i] < this.minScore)
+                this.minScore = scores[i];
+            if (this.maxScore == null)
+                this.maxScore = scores[i];
+            else if (scores[i] > this.maxScore)
+                this.maxScore = scores[i];
         }
-        this.partValue = (this.maxAvgScore - this.minAvgScore) / (this.scoreParts - 1);
+        this.partValue = (this.maxScore - this.minScore) / (this.scoreParts - 1);
         for (var i = 0, len = this.scoreParts; i < len; i++) {
-            var score = this.roundScore(this.maxAvgScore - i * this.partValue);
-            this.avgScores[score] = {
+            var score = this.roundScore(this.maxScore - i * this.partValue);
+            this.ScoresObj[score] = {
                 index: i
             };
-            this.avgScores.length++;
+            this.ScoresObj.length++;
         }
     };
     /**
      * Return scores object
      * @returns {*}
      */
-    AvgScoresClass.prototype.getMainObject = function () { return this.avgScores; };
-    AvgScoresClass.prototype.getDataIndex = function (score) {
+    ScoresClass.prototype.getMainObject = function () { return this.ScoresObj; };
+    ScoresClass.prototype.getDataIndex = function (score) {
         var scoreData = this.roundScore(score);
-        return this.avgScores[scoreData].index;
+        return this.ScoresObj[scoreData].index;
     };
     /**
      * Return length of scores array
      * @returns {number}
      */
-    AvgScoresClass.prototype.getDataLength = function () { return this.avgScores.length; };
-    AvgScoresClass.prototype.roundScore = function (score) {
-        var times = Math.round((score - this.minAvgScore) / this.partValue);
-        var result = this.minAvgScore + times * this.partValue;
+    ScoresClass.prototype.getDataLength = function () { return this.ScoresObj.length; };
+    ScoresClass.prototype.roundScore = function (score) {
+        var times = Math.round((score - this.minScore) / this.partValue);
+        var result = this.minScore + times * this.partValue;
         return result.toFixed(2);
     };
-    return AvgScoresClass;
+    return ScoresClass;
 })();
-var AvgScores = new AvgScoresClass();
+var AvgScores = new ScoresClass();
+var ArtScores = new ScoresClass();
 /// <reference path="d.ts/d3.d.ts" />
 /// <reference path="../vendor/promise.d.ts" />
 /// <reference path="interfaces.ts" />
@@ -744,7 +744,7 @@ var AvgScores = new AvgScoresClass();
 /// <reference path="modules/TooltipModule.ts" />
 /// <reference path="classes/PricesClass.ts" />
 /// <reference path="classes/YearsClass.ts" />
-/// <reference path="classes/AvgScoresClass.ts" />
+/// <reference path="classes/ScoresClass.ts" />
 // http://localhost:1337/books
 promise.get('data/books.json')
     .then(function (error, data) {
