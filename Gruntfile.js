@@ -3,9 +3,22 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        concat: {
+            options: {
+                separator: ';'
+            },
+            dist: {
+                src: [
+                    'node_modules/d3/d3.min.js',
+                    'vendor/promise.js',
+                    'dist/app.js'
+                ],
+                dest: 'dist/bundle.js'
+            }
+        },
         shell: {
             TypeScript: {
-                command: 'node node_modules/typescript/bin/tsc --sourceMap --out js/app.js source/app.ts'
+                command: 'node node_modules/typescript/bin/tsc --sourceMap --out dist/app.js source/app.ts'
             }
         },
         less: {
@@ -13,22 +26,23 @@ module.exports = function(grunt) {
                 options: {
                 },
                 files: {
-                    "css/style.css": "source/less/style.less"
+                    "dist/css/style.css": "source/less/style.less"
                 }
             }
         },
         watch: {
             scripts: {
                 files: ['source/**/*.ts', 'source/less/*.less'],
-                tasks: ['less', 'shell']
+                tasks: ['less', 'shell', 'concat']
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-shell');
 
-    grunt.registerTask('default', ['less', 'shell', 'watch']);
+    grunt.registerTask('default', ['less', 'shell', 'concat', 'watch']);
 
 };

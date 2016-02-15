@@ -2,19 +2,18 @@
   "name": "books-graph",
   "version": "0.1.0",
   "description": "Books graph with d3 force",
-  "main": "index.html",
   "scripts": {
     "build": "grunt",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Artem Demo",
-  "license": "BSD-2-Clause",
   "dependencies": {
     "d3": "~3.5.5",
     "bootstrap": "~3.3.4"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
+    "grunt-contrib-concat": "^0.5.1",
     "grunt-contrib-less": "~1.0.1",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-shell": "~1.1.2",
