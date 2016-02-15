@@ -251,7 +251,8 @@ var Controllers;
                     // else remove active class from the element
                     $btn.className = $btn.className.replace(new RegExp('(^|\\b) ' + activeClass + '(\\b|$)', 'gi'), '');
                 // Setting current controller value
-                toggleCurrentContValue($btn.parentNode.attributes['data-axis'].nodeValue, e.srcElement.attributes['data-show'].nodeValue // data - all, score, year
+                toggleCurrentContValue($btn.parentNode.attributes['data-axis'].nodeValue, // axis - X or Y
+                e.srcElement.attributes['data-show'].nodeValue // data - all, score, year
                 );
                 // Switching Y axes
                 switch (true) {

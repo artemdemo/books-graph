@@ -5,7 +5,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         shell: {
             TypeScript: {
-                command: 'node TypeScript/built/local/tsc.js --sourceMap --out js/app.js source/app.ts'
+                command: 'node node_modules/typescript/bin/tsc --sourceMap --out js/app.js source/app.ts'
             }
         },
         less: {
